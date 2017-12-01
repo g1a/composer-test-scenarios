@@ -1,6 +1,13 @@
 {
     "name": "greg-1-anderson/composer-test-scenarios",
     "description": "Useful scripts for testing multiple sets of Composer dependencies.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Greg Anderson",
+            "email": "greg.1.anderson@greenknowe.org"
+        }
+    ],
     "require": {
     },
     "bin": [
