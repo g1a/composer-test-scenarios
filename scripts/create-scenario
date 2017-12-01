@@ -114,5 +114,5 @@ for target in ${AUTOLOAD_DIRECTORIES} ; do
 done
 
 # Copy our install-scenario script in so that it may be committed with our composer.lock files
-cp -f ${SELF_DIRNAME}/install-scenario $dir/install
-chmod +x $dir/install
+cp -f ${SELF_DIRNAME}/install-scenario $dir/../install
+chmod +x $dir/../install
