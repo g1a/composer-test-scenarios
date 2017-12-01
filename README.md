@@ -44,3 +44,10 @@ The matrix will define the php version to use in the test, the scenario to use, 
   - To do a **current** test, do leave `HIGHEST_LOWEST` undefined.
 
 With this setup, all that you need to do to create your scenarios is to run `composer update`. Commit the entire contents of the generated `scenarios` directory. Thereafter, every subsequent time that you run `composer update`, your scenario lock files will also be brought up to date. Commit the changes to your scenarios directory whenever you commit your updated `composer.lock` file.
+
+To do ad-hoc testing, run:
+```
+$ composer scenario symfony4
+$ composer test
+```
+To go back to the default scenario, just run `composer install` (or `composer scenario`, which does the same thing).
