@@ -1,5 +1,7 @@
 #!/bin/bash
 
+SELF_DIRNAME="`dirname -- "$0"`"
+
 # The first argument is always the scenario name. Options come after.
 SCENARIO="$1"
 shift
@@ -111,3 +113,6 @@ for target in ${AUTOLOAD_DIRECTORIES} ; do
   [[ ! -d "$target" ]] || ln -s -f ../../$target $dir
 done
 
+# Copy our install-scenario script in so that it may be committed with our composer.lock files
+cp -f ${SELF_DIRNAME}/install-scenario $dir/install
+chmod +x $dir/install
