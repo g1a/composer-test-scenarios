@@ -23,10 +23,10 @@ If your composer.lock holds Symfony 3 components, then the `highest` test can be
 
 That is where this project comes in.
 
-- Test scenarios are defined in your composer.json file. Scenarios are named, and it is easy to add more.
+- Test scenarios are [defined in your composer.json file](#define-scenarios). Scenarios are named, and it is easy to add more.
 - Once your test scenarios are defined, they are automatically kept up to date whenever `composer update` is ran.
-- Test scenarios can be referenced by name in your travis.yml test matrix, making it easy to read and modify your test suite.
-- Any scenario can easily be installed locally to allow ad-hoc testing of different dependencies without needing to temporarily modify the project's main composer.json file.
+- Test scenarios can be [referenced by name in your travis.yml test matrix](#install-scenarios), making it easy to read and modify your test suite.
+- Any scenario can easily be [installed locally to allow ad-hoc testing](#test-locally) of different dependencies without needing to temporarily modify the project's main composer.json file.
 
 As an added bonus, the test scripts in the example composer.json file automaticlly run a linter on all PHP files in the porject, and enforce PSR-2 coding conventions on the project source files. The coding standards may be customized to suit.
 
@@ -42,7 +42,7 @@ composer require greg-1-anderson/composer-test-scenarios:^1
 Use the [example composer.json file](example-composer.json) as a guide to set up your project's composer.json file. In particular, you should:
 
 - Copy the `scripts` section.
-- If using coveralls.io, be sure to use the version constraints from the example composer.json file for satooshi/php-coveralls until https://github.com/php-coveralls/php-coveralls/issues/203#issuecomment-347710771 is fixed.
+- If using coveralls.io, be sure to use the version constraints from the example composer.json file for satooshi/php-coveralls until [satooshi/php-coveralls#203](https://github.com/php-coveralls/php-coveralls/issues/203#issuecomment-347710771) is fixed.
 - Set the platform PHP setting in the config section if you want your default test scenario to be based on Symfony 3.
 
 #### Define scenarios
