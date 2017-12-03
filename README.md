@@ -11,6 +11,8 @@ You will likely find this project to be useful when your project's composer.json
         ...
     }
 ```
+This project provides the most benefit to PHP libraries that test three or more major versions of one of their dependencies; however, it is also useful to libraries that test just two major versions of some dependency.
+
 If you wish to be able to easily test all of the different significant possible dependency resolutions for your project, the usual course of action is to use [lowest, current, highest testing](https://blog.wyrihaximus.net/2015/06/test-lowest-current-and-highest-possible-on-travis/). The basic purpose of each of these tests are as follows:
 
 - **Current** tests run against the specific dependencies in a committed composer.lock file, ensuring that the dependencies being used do not change during the implementation of a new feature.
@@ -34,7 +36,7 @@ As an added bonus, the test scripts in the example composer.json file automaticl
 
 To add these scripts to your project, run:
 ```
-composer require greg-1-anderson/composer-test-scenarios:^1
+composer require --dev greg-1-anderson/composer-test-scenarios:^1
 ```
 
 #### Initial setup
