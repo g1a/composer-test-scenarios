@@ -81,7 +81,7 @@ composer -n --working-dir=$dir config platform.php "${PLATFORM_PHP}"
 composer -n --working-dir=$dir config minimum-stability "${STABILITY}"
 
 # Add a constraint to limit the Symfony version
-[[ -z "${REQUIREMENTS}" ]] || composer -n --working-dir=$dir require --dev --no-update "${REQUIREMENTS}"
+[[ -z "${REQUIREMENTS}" ]] || composer -n --working-dir=$dir require --dev --no-update ${REQUIREMENTS}
 
 # Never commit a cached 'vendor' directory in the scenario folder
 echo 'vendor' > $dir/.gitignore
