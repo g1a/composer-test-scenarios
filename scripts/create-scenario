@@ -16,6 +16,7 @@ PLATFORM_PHP="--unset"
 STABILITY="stable"
 CREATE_LOCKFILE=true
 AUTOLOAD_DIRECTORIES="src tests"
+REMOVALS=
 REQUIREMENTS=
 
 echo
@@ -56,6 +57,12 @@ while [ $# -gt 0 ] ; do
       AUTOLOAD_DIRECTORIES="${AUTOLOAD_DIRECTORIES} ${autoload_dir}"
       ;;
 
+    --remove)
+      project_to_remove="$1"
+      shift
+      REMOVALS="${REMOVALS} ${project_to_remove}"
+      ;;
+
     -*)
       echo "Unknown option $option"
       exit 1;
@@ -80,7 +87,10 @@ composer -n --working-dir=$dir config platform.php "${PLATFORM_PHP}"
 # Set an appropriate minimum stability for this version of Symfony
 composer -n --working-dir=$dir config minimum-stability "${STABILITY}"
 
-# Add a constraint to limit the Symfony version
+# Remove components that are not desired
+[[ -z "${REMOVALS}" ]] || composer -n --working-dir=$dir remove --dev --no-update ${REMOVALS}
+
+# Add a constraint
 [[ -z "${REQUIREMENTS}" ]] || composer -n --working-dir=$dir require --dev --no-update ${REQUIREMENTS}
 
 # Never commit a cached 'vendor' directory in the scenario folder

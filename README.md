@@ -58,6 +58,7 @@ Alter the `create-scenario` commands in the `post-update-cmd` script to create t
   - `--stability stable`: set the stability. Default: stable
   - `--create-lockfile`: create a composer.lock file to commit. This is the default.
   - `--no-lockfile`: create a modified composer.json file, but omit the composer.lock file. You may specify this option for any scenario that has only **highest** or **lowest** tests. A lock file is required to do **current** tests.
+  - `--remove org/project`: remove a project from this scenario (e.g. to remove an optional component for testing on an earlier version of php.)
 
 #### Install scenarios
 
