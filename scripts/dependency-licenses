@@ -1,0 +1,25 @@
+#!/bin/bash
+
+#
+# Append the licenses for this project's dependencies to the end of the LICENSE file, if it exists.
+#
+
+dir='.'
+target='./LICENSE'
+tmp="$target.tmp"
+year="$(date '+%Y')"
+
+# Update dependency licenses in the LICENSE file, if it exists.
+if [[ -f "$target" ]] ; then
+  sed \
+    -e "s/\(^ *Copyright [^0-9]*[0-9][0-9][0-9][0-9]\)\([0-9-]*\)/\1-$year/" \
+    -e "s/\(^ *Copyright [^0-9]*$year\)\(-$year\)/\1/" \
+    -e '/DEPENDENCY LICENSES:/,$d' "$target" | sed -e :a -e '/^\n*$/{$d;N;ba' -e '}' > "$tmp"
+  (
+    echo
+    echo "DEPENDENCY LICENSES:"
+    echo
+    composer -n --working-dir=$dir licenses --no-dev | sed -e '1,/^ *$/d'
+  ) >> "$tmp"
+  mv -f "$tmp" "$target"
+fi

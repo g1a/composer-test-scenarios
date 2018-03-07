@@ -44,7 +44,6 @@ composer require --dev g-1-a/composer-test-scenarios:^1
 Use the [example composer.json file](example-composer.json) as a guide to set up your project's composer.json file. In particular, you should:
 
 - Copy the `scripts` section.
-- If using coveralls.io, be sure to use the version constraints from the example composer.json file for satooshi/php-coveralls until [satooshi/php-coveralls#203](https://github.com/php-coveralls/php-coveralls/issues/203#issuecomment-347710771) is fixed.
 - Set the platform PHP setting in the config section if you want your default test scenario to be based on Symfony 3.
 
 #### Define scenarios
@@ -59,6 +58,7 @@ Alter the `create-scenario` commands in the `post-update-cmd` script to create t
   - `--create-lockfile`: create a composer.lock file to commit. This is the default.
   - `--no-lockfile`: create a modified composer.json file, but omit the composer.lock file. You may specify this option for any scenario that has only **highest** or **lowest** tests. A lock file is required to do **current** tests.
   - `--remove org/project`: remove a project from this scenario (e.g. to remove an optional component for testing on an earlier version of php.)
+- The 'dependency-licenses' line will copy the license information for your project's dependencies into the end of your project's LICENSE file, if it exists.
 
 #### Install scenarios
 
