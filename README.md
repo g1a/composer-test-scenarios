@@ -58,17 +58,17 @@ Alter the `create-scenario` commands in the `post-update-cmd` script to create t
   - `--create-lockfile`: create a composer.lock file to commit. This is the default.
   - `--no-lockfile`: create a modified composer.json file, but omit the composer.lock file. You may specify this option for any scenario that has only **highest** or **lowest** tests. A lock file is required to do **current** tests.
   - `--remove org/project`: remove a project from this scenario (e.g. to remove an optional component for testing on an earlier version of php.)
-- The 'dependency-licenses' line will copy the license information for your project's dependencies into the end of your project's LICENSE file, if it exists.
+- The 'dependency-licenses' line in the `post-update-cmd` will copy the license information for your project's dependencies into the end of your project's LICENSE file, if it exists. This makes it easy for prospective users of your project to see that all of your dependencies are properly licensed. As a service, this cript also extends teh copyright in the LICENSE to encompass the current year whenever the list of licenses is updated. This script is idempotent.
 
 #### Install scenarios
 
-Use the [example .travis.yml]() file as a starting point for your tests. Alter the test matrix as necessary to test highest, current and/or lowest dependencies as desired for each of the scenarios. Any scenario referenced in your `.travis.yml` file must be defined in your `composer.json` file. The Travis test matrix will define the php version to use in the test, the scenario to use, and whether to do a lowest, current or highest test.
+Use the [example .travis.yml](example .travis.yml) file as a starting point for your tests. Alter the test matrix as necessary to test highest, current and/or lowest dependencies as desired for each of the scenarios. Any scenario referenced in your `.travis.yml` file must be defined in your `composer.json` file. The Travis test matrix will define the php version to use in the test, the scenario to use, and whether to do a lowest, current or highest test.
 
 - Define the `SCENARIO` environment variable to name the scenario to test. If this variable is not defined, then the composer.json / composer.lock at the root of the project will be used for the test run.
 - Use the `HIGHEST_LOWEST` environment variable to specify whether a lowest, current or highest test should be done.
-  - To do a **highest** test, set `HIGHEST_LOWEST=update`.
-  - To do a **lowest** test, set `HIGHEST_LOWEST="update --prefer-lowest"`.
-  - To do a **current** test, do leave `HIGHEST_LOWEST` undefined.
+  - To do a **highest** test, set `DEPENDENCIES=highest`.
+  - To do a **lowest** test, set `DEPENDENCIES=lowest`.
+  - To do a **current** test, set `DEPENCENCIES=lock`, or leave it undefined.
 
 With this setup, all that you need to do to create your scenarios is to run `composer update`. Commit the entire contents of the generated `scenarios` directory. Thereafter, every subsequent time that you run `composer update`, your scenario lock files will also be brought up to date. Commit the changes to your scenarios directory whenever you commit your updated `composer.lock` file.
 
@@ -79,4 +79,4 @@ To do ad-hoc testing, run:
 $ composer scenario symfony4
 $ composer test
 ```
-To go back to the default scenario, just run `composer install` (or `composer scenario`, which does the same thing).
+To go back to the default scenario, just run `composer install` (or `composer scenario default`, which does the same thing).
