@@ -33,6 +33,11 @@ while [ $# -gt 0 ] ; do
   shift
 
   case "$option" in
+    --unset-platform-php)
+      PLATFORM_PHP="--unset"
+      shift
+      ;;
+
     --platform-php)
       PLATFORM_PHP="$1"
       shift
@@ -82,7 +87,7 @@ mkdir -p $dir
 cp composer.json $dir
 
 # Then set our own platform php version if applicable (otherwise unset it)
-composer -n --working-dir=$dir config platform.php "${PLATFORM_PHP}"
+[[ -z "${PLATFORM_PHP}" ]] ||  composer -n --working-dir=$dir config platform.php "${PLATFORM_PHP}"
 
 # Set an appropriate minimum stability for this version of Symfony
 composer -n --working-dir=$dir config minimum-stability "${STABILITY}"

@@ -15,9 +15,9 @@ This project provides the most benefit to PHP libraries that test three or more 
 
 If you wish to be able to easily test all of the different significant possible dependency resolutions for your project, the usual course of action is to use [lowest, current, highest testing](https://blog.wyrihaximus.net/2015/06/test-lowest-current-and-highest-possible-on-travis/). The basic purpose of each of these tests are as follows:
 
-- **Current** tests run against the specific dependencies in a committed composer.lock file, ensuring that the dependencies being used do not change during the implementation of a new feature.
+- **Current** tests run against the specific dependencies in a committed composer.lock file, ensuring that the dependencies being used do not change during the implementation of a new feature. This provides assurance that any test failure is due to changes in the project code, and not because a dependency that happened to be updates since the last test run caused an issue.
 
-- **Highest** tests first run `composer update` to ensure that all dependencies are brought up to date before the tests are run. If the current tests are passing, but the highest tests fail, it is an indication that some dependency might have accidentally introduced a change that is not backwards compatible with previous versions.
+- **Highest** tests first run `composer update` to ensure that all dependencies are brought up to date before the tests are run. If the 'current' tests are passing, but the 'highest' tests fail, it is an indication that some dependency might have accidentally introduced a change that is not backwards compatible with previous versions.
 
 - **Lowest** tests first run `composer update --prefer-lowest` to install the absolute lowest version permitted by the project's version constraints. If the lowest tests fail, but other tests pass, it indicates that the current feature may have introduced calls to some dependency APIs not available in the versions specified in the project's composer.json file.
 
@@ -53,7 +53,7 @@ Alter the `create-scenario` commands in the `post-update-cmd` script to create t
 - Call `create-scenario name` to create a test scenario with the specified name.
 - Use additional arguments to list the Composer requirements to use in this scenario, e.g. `symfony/console:^2.8`
 - Other flags are available to alter the scenario's composer.json file as needed:
-  - `--platform-php 7.0`: set the platform php version (recommended). Default: unset.
+  - `--platform-php 7.0`: set the platform php version (recommended). Default: no change.
   - `--stability stable`: set the stability. Default: stable
   - `--create-lockfile`: create a composer.lock file to commit. This is the default.
   - `--no-lockfile`: create a modified composer.json file, but omit the composer.lock file. You may specify this option for any scenario that has only **highest** or **lowest** tests. A lock file is required to do **current** tests.
