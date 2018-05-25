@@ -36,7 +36,7 @@ As an added bonus, the test scripts in the example composer.json file automaticl
 
 To add these scripts to your project, run:
 ```
-composer require --dev g-1-a/composer-test-scenarios:^2
+composer require --dev g1a/composer-test-scenarios:^2
 ```
 
 #### Initial setup
