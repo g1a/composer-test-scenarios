@@ -62,7 +62,7 @@ Alter the `create-scenario` commands in the `post-update-cmd` script to create t
 
 #### Install scenarios
 
-Use the [example .travis.yml](example .travis.yml) file as a starting point for your tests. Alter the test matrix as necessary to test highest, current and/or lowest dependencies as desired for each of the scenarios. Any scenario referenced in your `.travis.yml` file must be defined in your `composer.json` file. The Travis test matrix will define the php version to use in the test, the scenario to use, and whether to do a lowest, current or highest test.
+Use the [example .travis.yml](example.travis.yml) file as a starting point for your tests. Alter the test matrix as necessary to test highest, current and/or lowest dependencies as desired for each of the scenarios. Any scenario referenced in your `.travis.yml` file must be defined in your `composer.json` file. The Travis test matrix will define the php version to use in the test, the scenario to use, and whether to do a lowest, current or highest test.
 
 - Define the `SCENARIO` environment variable to name the scenario to test. If this variable is not defined, then the composer.json / composer.lock at the root of the project will be used for the test run.
 - Use the `HIGHEST_LOWEST` environment variable to specify whether a lowest, current or highest test should be done.
@@ -80,3 +80,16 @@ $ composer scenario symfony4
 $ composer test
 ```
 To go back to the default scenario, just run `composer install` (or `composer scenario default`, which does the same thing).
+
+## Scenarios folder
+
+Each scenario has its own `composer.lock` file (save for those scenarios created with the `--no-lockfile` option). These lock files are stored in the `scenarios` directory, which is created automatically by the `create-scenario` script. The contents of the `scenarios` directory should be committed to your repository, just like the `composer.lock` file is.
+
+The new recommended name for the `scenarios` directory is `.scenarios.lock`. This underscores that the contents of this directory are like the `composer.lock` file, and, since this is a hidden directory, its contents are not relevant to the typical user. To use the new recommended name:
+
+1. Ensure that your project has been updated to g1a/composer-test-scenarios:^2.1.0
+2. Change the "scenario" script in your composer.json file to `".scenarios.lock/install"`
+3. `git mv scenarios .scenarios.lock`
+4. Commit and push the result
+
+The create-scenario script will automatically use the `.scenarios.lock` directory instead of the `scenarios` directory if it already exists. A future version of `g1a/composer-test-scenarios` will do steps 2 and 3 of this process automatically when the `create-scenarios` script is run.
