@@ -53,7 +53,7 @@ Alter the `create-scenario` commands in the `post-update-cmd` script to create t
 - Call `create-scenario name` to create a test scenario with the specified name.
 - Use additional arguments to list the Composer requirements to use in this scenario, e.g. `symfony/console:^2.8`
 - Other flags are available to alter the scenario's composer.json file as needed:
-  - `--platform-php 7.0`: set the platform php version (recommended). Default: no change.
+  - `--platform-php 7.0.11`: set the platform php version (recommended). Default: no change.
   - `--stability stable`: set the stability. Default: stable
   - `--create-lockfile`: create a composer.lock file to commit. This is the default.
   - `--no-lockfile`: create a modified composer.json file, but omit the composer.lock file. You may specify this option for any scenario that has only **highest** or **lowest** tests. A lock file is required to do **current** tests.
