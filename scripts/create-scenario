@@ -118,7 +118,7 @@ composer -n --working-dir=$dir config minimum-stability "${STABILITY}"
 # `require-dev` section; we will attempt to remove each request from
 # both. This may produce warning messages.
 [[ -z "${REMOVALS}" ]] || composer -n --working-dir=$dir remove --no-update ${REMOVALS}
-[[ -z "${REMOVALS}" ]] || composer -n --working-dir=$dir remove --no-update --dev ${REMOVALS}
+[[ -z "${REMOVALS}" ]] || composer -n --working-dir=$dir remove --no-update --dev ${REMOVALS} >/dev/null 2>&1
 
 # Add a constraint
 [[ -z "${REQUIREMENTS}" ]] || composer -n --working-dir=$dir require --dev --no-update ${REQUIREMENTS}
