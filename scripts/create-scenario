@@ -113,8 +113,12 @@ cp $scenarios_dir/$BASE/composer.json $dir
 # Set an appropriate minimum stability for this version of Symfony
 composer -n --working-dir=$dir config minimum-stability "${STABILITY}"
 
-# Remove components that are not desired
-[[ -z "${REMOVALS}" ]] || composer -n --working-dir=$dir remove --dev --no-update ${REMOVALS}
+# Remove components that are not desired.
+# We do not care whether a component is present in the `require` or
+# `require-dev` section; we will attempt to remove each request from
+# both. This may produce warning messages.
+[[ -z "${REMOVALS}" ]] || composer -n --working-dir=$dir remove --no-update ${REMOVALS}
+[[ -z "${REMOVALS}" ]] || composer -n --working-dir=$dir remove --no-update --dev ${REMOVALS}
 
 # Add a constraint
 [[ -z "${REQUIREMENTS}" ]] || composer -n --working-dir=$dir require --dev --no-update ${REQUIREMENTS}
