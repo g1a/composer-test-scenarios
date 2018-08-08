@@ -54,10 +54,13 @@ Alter the `create-scenario` commands in the `post-update-cmd` script to create t
 - Use additional arguments to list the Composer requirements to use in this scenario, e.g. `symfony/console:^2.8`
 - Other flags are available to alter the scenario's composer.json file as needed:
   - `--platform-php 7.0.11`: set the platform php version (recommended). Default: no change.
+  - `--unset-platform-php`: remove the platform php version restriction from the platform requirements section in composer.json.
   - `--stability stable`: set the stability. Default: stable
   - `--create-lockfile`: create a composer.lock file to commit. This is the default.
   - `--no-lockfile`: create a modified composer.json file, but omit the composer.lock file. You may specify this option for any scenario that has only **highest** or **lowest** tests. A lock file is required to do **current** tests.
+  - `--autoload-dir`: add a symbolic link to a directory referenced by the autoloader. Default is `src` and `tests`.
   - `--remove org/project`: remove a project from this scenario (e.g. to remove an optional component for testing on an earlier version of php.)
+  - `--keep regex`: remove all projects whose org/project does not match the provided regex (e.g. to get down to some base set of dependencies for testing.)
 - The 'dependency-licenses' line in the `post-update-cmd` will copy the license information for your project's dependencies into the end of your project's LICENSE file, if it exists. This makes it easy for prospective users of your project to see that all of your dependencies are properly licensed. As a service, this cript also extends teh copyright in the LICENSE to encompass the current year whenever the list of licenses is updated. This script is idempotent.
 
 #### Install scenarios

@@ -68,6 +68,13 @@ while [ $# -gt 0 ] ; do
       REMOVALS="${REMOVALS} ${project_to_remove}"
       ;;
 
+    --keep)
+      keep_pattern="$1"
+      shift
+      projects_to_remove="$(composer info | cut -f 1 -d ' ' | grep -v $keep_pattern)"
+      REMOVALS="${REMOVALS} ${projects_to_remove}"
+      ;;
+
     -*)
       echo "Unknown option $option"
       exit 1;
