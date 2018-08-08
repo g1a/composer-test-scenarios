@@ -72,7 +72,7 @@ while [ $# -gt 0 ] ; do
     --keep)
       keep_pattern="$1"
       shift
-      projects_to_remove="$(composer info | cut -f 1 -d ' ' | grep -v $keep_pattern)"
+      projects_to_remove="$(composer info --direct | cut -f 1 -d ' ' | grep -v $keep_pattern)"
       REMOVALS="${REMOVALS} ${projects_to_remove}"
       ;;
 
