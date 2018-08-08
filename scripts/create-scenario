@@ -18,6 +18,7 @@ CREATE_LOCKFILE=true
 AUTOLOAD_DIRECTORIES="src tests"
 REMOVALS=
 REQUIREMENTS=
+BASE=..
 
 echo
 echo "::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
@@ -75,6 +76,11 @@ while [ $# -gt 0 ] ; do
       REMOVALS="${REMOVALS} ${projects_to_remove}"
       ;;
 
+    --base)
+      BASE="$1"
+      shift
+      ;;
+
     -*)
       echo "Unknown option $option"
       exit 1;
@@ -91,15 +97,15 @@ set -ex
 original_name=scenarios
 recommended_name=".scenarios.lock"
 
-base="$original_name"
+scenarios_dir="$original_name"
 if [ -d "$recommended_name" ] ; then
-  base="$recommended_name"
+  scenarios_dir="$recommended_name"
 fi
 
 # Create the scenario directory, and start with a fresh composer.json file.
-dir="$base/${SCENARIO}"
+dir="$scenarios_dir/${SCENARIO}"
 mkdir -p $dir
-cp composer.json $dir
+cp $scenarios_dir/$BASE/composer.json $dir
 
 # Then set our own platform php version if applicable (otherwise unset it)
 [[ -z "${PLATFORM_PHP}" ]] ||  composer -n --working-dir=$dir config platform.php "${PLATFORM_PHP}"

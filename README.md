@@ -61,6 +61,7 @@ Alter the `create-scenario` commands in the `post-update-cmd` script to create t
   - `--autoload-dir`: add a symbolic link to a directory referenced by the autoloader. Default is `src` and `tests`.
   - `--remove org/project`: remove a project from this scenario (e.g. to remove an optional component for testing on an earlier version of php.)
   - `--keep regex`: remove all projects whose org/project does not match the provided regex (e.g. to get down to some base set of dependencies for testing.)
+  - `--base SCENARIO`: the name of a previously-created scenario that should be used as the basis for the new scenario
 - The 'dependency-licenses' line in the `post-update-cmd` will copy the license information for your project's dependencies into the end of your project's LICENSE file, if it exists. This makes it easy for prospective users of your project to see that all of your dependencies are properly licensed. As a service, this cript also extends teh copyright in the LICENSE to encompass the current year whenever the list of licenses is updated. This script is idempotent.
 
 #### Install scenarios
