@@ -1,6 +1,7 @@
 {
     "name": "g1a/composer-test-scenarios",
     "description": "Useful scripts for testing multiple sets of Composer dependencies.",
+    "type": "composer-plugin",
     "license": "MIT",
     "authors": [
         {
@@ -9,6 +10,26 @@
         }
     ],
     "require": {
+        "php": ">5.4",
+        "composer-plugin-api": "^1.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ComposerTestScenarios\\": "src/"
+        }
+    },
+    "extra": {
+        "class": "ComposerTestScenarios\\Plugin",
+        "branch-alias": {
+            "dev-master": "3.x-dev"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "platform": {
+            "php": "7.0.8"
+        }
     },
     "bin": [
         "scripts/create-scenario",

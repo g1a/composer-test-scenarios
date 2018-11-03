@@ -97,9 +97,9 @@ set -ex
 original_name=scenarios
 recommended_name=".scenarios.lock"
 
-scenarios_dir="$original_name"
-if [ -d "$recommended_name" ] ; then
-  scenarios_dir="$recommended_name"
+scenarios_dir="$recommended_name"
+if [ ! -d "$recommended_name" ] && [ -d "$original_name" ] ; then
+  scenarios_dir="$original_name"
 fi
 
 # Create the scenario directory, and start with a fresh composer.json file.
