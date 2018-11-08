@@ -18,6 +18,7 @@ CREATE_LOCKFILE=true
 AUTOLOAD_DIRECTORIES="src tests"
 REMOVALS=
 REQUIREMENTS=
+BASE=..
 
 echo
 echo "::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
@@ -68,6 +69,18 @@ while [ $# -gt 0 ] ; do
       REMOVALS="${REMOVALS} ${project_to_remove}"
       ;;
 
+    --keep)
+      keep_pattern="$1"
+      shift
+      projects_to_remove="$(composer info --direct | cut -f 1 -d ' ' | grep -v $keep_pattern)"
+      REMOVALS="${REMOVALS} ${projects_to_remove}"
+      ;;
+
+    --base)
+      BASE="$1"
+      shift
+      ;;
+
     -*)
       echo "Unknown option $option"
       exit 1;
@@ -84,15 +97,15 @@ set -ex
 original_name=scenarios
 recommended_name=".scenarios.lock"
 
-base="$original_name"
+scenarios_dir="$original_name"
 if [ -d "$recommended_name" ] ; then
-  base="$recommended_name"
+  scenarios_dir="$recommended_name"
 fi
 
 # Create the scenario directory, and start with a fresh composer.json file.
-dir="$base/${SCENARIO}"
+dir="$scenarios_dir/${SCENARIO}"
 mkdir -p $dir
-cp composer.json $dir
+cp $scenarios_dir/$BASE/composer.json $dir
 
 # Then set our own platform php version if applicable (otherwise unset it)
 [[ -z "${PLATFORM_PHP}" ]] ||  composer -n --working-dir=$dir config platform.php "${PLATFORM_PHP}"
@@ -100,8 +113,12 @@ cp composer.json $dir
 # Set an appropriate minimum stability for this version of Symfony
 composer -n --working-dir=$dir config minimum-stability "${STABILITY}"
 
-# Remove components that are not desired
-[[ -z "${REMOVALS}" ]] || composer -n --working-dir=$dir remove --dev --no-update ${REMOVALS}
+# Remove components that are not desired.
+# We do not care whether a component is present in the `require` or
+# `require-dev` section; we will attempt to remove each request from
+# both. This may produce warning messages.
+[[ -z "${REMOVALS}" ]] || composer -n --working-dir=$dir remove --no-update ${REMOVALS}
+[[ -z "${REMOVALS}" ]] || composer -n --working-dir=$dir remove --no-update --dev ${REMOVALS} >/dev/null 2>&1
 
 # Add a constraint
 [[ -z "${REQUIREMENTS}" ]] || composer -n --working-dir=$dir require --dev --no-update ${REQUIREMENTS}
