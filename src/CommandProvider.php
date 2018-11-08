@@ -3,6 +3,9 @@
 namespace ComposerTestScenarios;
 
 use Composer\Plugin\Capability\CommandProvider as CommandProviderCapability;
+use ComposerTestScenarios\Commands\CreateScenarioCommand;
+use ComposerTestScenarios\Commands\UpdateScenarioCommand;
+use ComposerTestScenarios\Commands\UpdateLockCommand;
 
 /**
  * List of all commands provided by this package.
@@ -15,6 +18,8 @@ class CommandProvider implements CommandProviderCapability
       public function getCommands() {
             return [
                 new CreateScenarioCommand(),
+                new UpdateScenarioCommand(),
+                new UpdateLockCommand(),
             ];
       }
 }

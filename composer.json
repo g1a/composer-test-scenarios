@@ -13,9 +13,18 @@
         "php": ">5.4",
         "composer-plugin-api": "^1.0.0"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^6",
+        "composer/composer": "^1.7"
+    },
     "autoload": {
         "psr-4": {
             "ComposerTestScenarios\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ComposerTestScenarios\\": "tests/src/"
         }
     },
     "extra": {

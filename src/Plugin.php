@@ -20,7 +20,7 @@ use Composer\Script\ScriptEvents;
  * There are two reasons why this tool is a Composer plugin:
  *
  * 1. It provides a convenient way to define a command, e.g. 'composer create-scenario'
- * 2. It adds a new event 'define-scenarios'
+ * 2. It adds a new event 'define-scenarios-cmd'
  *
  * We might do other neat things with this as well
  */
@@ -57,7 +57,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface, Capable
      */
     public static function getSubscribedEvents() {
         return [
-            ScriptEvents::POST_UPDATE_CMD => 'scenarios',
+            ScriptEvents::POST_UPDATE_CMD => 'postUpdate',
             PluginEvents::COMMAND => 'cmdBegins',
         ];
     }
@@ -72,11 +72,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface, Capable
     }
 
     /**
-     * Post command event callback.
+     * Post update event callback.
      *
      * @param \Composer\Script\Event $event
      */
-    public function scenarios(Event $event) {
-        $this->handler->scenarios($event);
+    public function postUpdate(Event $event) {
+        $this->handler->scenariosEvent($event);
     }
 }
