@@ -43,6 +43,11 @@ class Handler
     protected $progress;
 
     /**
+     * @var string
+     */
+    protected $composer_home;
+
+    /**
      * Handler constructor.
      *
      * @param \Composer\Composer $composer
@@ -53,6 +58,7 @@ class Handler
         $this->composer = $composer;
         $this->io = $io;
         $this->progress = TRUE;
+        $this->composer_home = getenv('COMPOSER_HOME');
     }
 
     /**
@@ -141,16 +147,19 @@ class Handler
 
         $scenarioData = $this->adjustPaths($scenarioData);
         $this->writeComposerData($scenarioData, $scenarioDir);
-        $this->createScenarioLockfile($scenarioDir, $scenarioOptions['create-lockfile']);
+        $this->createScenarioLockfile($scenarioDir, $scenarioOptions['create-lockfile'], $dir);
     }
 
-    protected function createScenarioLockfile($scenarioDir, $create_lockfile)
+    protected function createScenarioLockfile($scenarioDir, $create_lockfile, $dir)
     {
         $gitignore = ['vendor'];
 
         if ($create_lockfile) {
             $this->composer('config', $scenarioDir, ['vendor-dir', 'vendor']);
-            $this->composer('update', $scenarioDir, ['--no-scripts']);
+            putenv("COMPOSER_HOME=$dir");
+            putenv("COMPOSER_HTACCESS_PROTECT=0");
+            putenv("COMPOSER_CACHE_DIR={$this->composer_home}/cache");
+            $this->composer('update:lock', $scenarioDir, []);
         }
         else {
             $gitignore[] = 'composer.lock';
