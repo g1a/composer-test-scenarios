@@ -14,8 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Composer\Command\BaseCommand;
 
-use ComposerTestScenarios\Downloader\NullDownloadManager;
-use ComposerTestScenarios\Downloader\NullInstaller;
+use Composer\Installer\NoopInstaller;
 
 /**
  * UpdateLockCommand updates the dependencies in a composer.lock file
@@ -58,14 +57,6 @@ to bring your vendor directory up-to-date with your composer.lock file.
 Note, however, that the typical use-case for this command are situations where
 the vendor directory does not exist and is not needed.
 
-WARNING: THIS COMMAND DOES NOT WORK CORRECTLY YET.
-
-Composer relies on the installer in order to generate a correct
-composer.lock file. When we disable the installer, we also prevent the
-lock file from being populated. Using the null downloader alone is not
-sufficient to prevent the generation of the vendor directory in all
-instances. This might be made to work with more effort.
-
 EOT
             )
         ;
@@ -93,15 +84,11 @@ EOT
             }
         }
 
-        $originalDm = $composer->getDownloadManager();
-        $ni = new NullInstaller();
+        $noop = new NoopInstaller();
 
         try
         {
-            $ndm = new NullDownloadManager($io);
-            $composer->setDownloadManager($ndm);
-
-            $composer->getInstallationManager()->addInstaller($ni);
+            $composer->getInstallationManager()->addInstaller($noop);
 
             $install = Installer::create($io, $composer);
 
@@ -125,14 +112,15 @@ EOT
                 ->setPreferStable($input->getOption('prefer-stable'))
                 ->setPreferLowest($input->getOption('prefer-lowest'))
                 ->disablePlugins()
+                ->setExecuteOperations(false)
+                ->setWriteLock(true)
             ;
 
             $result = $install->run();
         } catch(Exception $e) {
             throw $e;
         } finally {
-            $composer->setDownloadManager($originalDm);
-            $composer->getInstallationManager()->removeInstaller($ni);
+            $composer->getInstallationManager()->removeInstaller($noop);
         }
         return $result;
     }
