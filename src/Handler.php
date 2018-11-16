@@ -149,20 +149,16 @@ class Handler
 
     public function installScenario($scenario, $dependencies, $dir)
     {
-        $scenarioDir = $this->scenarioLockDir($dir) . "/$scenario";
+        $scenarioDir = $this->scenarioLockDir($scenario, $dir);
         if (!is_dir($scenarioDir)) {
             throw new \Exception("The scenario '$scenario' does not exist.");
         }
         list($scenarioCommand, $extraOptions) = $this->determineDependenciesCommand($dependencies);
 
-        passthru("composer -n --working-dir=$dir validate --no-check-all --ansi");
-        passthru("composer -n --working-dir=$dir $scenarioCommand $extraOptions --prefer-dist --no-scripts");
-
-        // If called from a CI context, print out some extra information about
-        // what we just installed.
-        if (getenv("CI")) {
-            passthru("composer -n --working-dir=$dir info");
-        }
+        print("composer -n --working-dir=$scenarioDir validate --no-check-all --ansi\n");
+        passthru("composer -n --working-dir=$scenarioDir validate --no-check-all --ansi");
+        print("composer -n --working-dir=$scenarioDir $scenarioCommand $extraOptions --prefer-dist --no-scripts\n");
+        passthru("composer -n --working-dir=$scenarioDir $scenarioCommand $extraOptions --prefer-dist --no-scripts");
     }
 
     protected function determineDependenciesCommand($dependencies)
@@ -252,17 +248,18 @@ class Handler
     {
         $fs = new SymfonyFilesystem();
 
-        $scenarioDir = $this->scenarioLockDir($dir);
-        $fs->mkdir($scenarioDir);
-        $scenarioDir .= "/$scenario";
+        $scenarioDir = $this->scenarioLockDir($scenario, $dir);
         $fs->mkdir($scenarioDir);
 
         return $scenarioDir;
     }
 
-    protected function scenarioLockDir($dir)
+    protected function scenarioLockDir($scenario, $dir)
     {
-        return "$dir/.scenarios.lock";
+        if ($scenario == 'default') {
+            return $dir;
+        }
+        return "$dir/.scenarios.lock/$scenario";
     }
 
     protected function adjustPaths($composerData)

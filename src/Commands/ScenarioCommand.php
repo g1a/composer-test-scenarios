@@ -42,5 +42,11 @@ class ScenarioCommand extends BaseCommand
         $dir = getcwd();
         $handler = new Handler($this->getComposer(), $this->getIO());
         $handler->installScenario($scenario_name, $dependencies, $dir);
+
+        // If called from a CI context, print out some extra information about
+        // what we just installed.
+        if (getenv("CI")) {
+            passthru("composer -n --working-dir=$dir info");
+        }
     }
 }

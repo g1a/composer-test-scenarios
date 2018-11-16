@@ -1,6 +1,7 @@
 {
     "name": "g1a/example-a",
     "description": "A test project for composer-test-scenarios.",
+    "license": "MIT",
     "repositories": [
         {
             "type": "path",
