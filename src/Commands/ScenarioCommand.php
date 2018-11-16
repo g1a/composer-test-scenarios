@@ -41,7 +41,11 @@ class ScenarioCommand extends BaseCommand
         $dependencies = $input->getArgument('dependencies') ?: 'install';
         $dir = getcwd();
         $handler = new Handler($this->getComposer(), $this->getIO());
-        $handler->installScenario($scenario_name, $dependencies, $dir);
+        $status = $handler->installScenario($scenario_name, $dependencies, $dir);
+
+        if ($status != 0) {
+            return $status;
+        }
 
         // If called from a CI context, print out some extra information about
         // what we just installed.

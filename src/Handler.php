@@ -149,16 +149,20 @@ class Handler
 
     public function installScenario($scenario, $dependencies, $dir)
     {
-        $scenarioDir = $this->scenarioLockDir($scenario, $dir);
+        $scenarioDir = static::scenarioLockDir($scenario, $dir);
         if (!is_dir($scenarioDir)) {
             throw new \Exception("The scenario '$scenario' does not exist.");
         }
         list($scenarioCommand, $extraOptions) = $this->determineDependenciesCommand($dependencies);
 
-        print("composer -n --working-dir=$scenarioDir validate --no-check-all --ansi\n");
-        passthru("composer -n --working-dir=$scenarioDir validate --no-check-all --ansi");
-        print("composer -n --working-dir=$scenarioDir $scenarioCommand $extraOptions --prefer-dist --no-scripts\n");
-        passthru("composer -n --working-dir=$scenarioDir $scenarioCommand $extraOptions --prefer-dist --no-scripts");
+        // print("composer -n --working-dir=$scenarioDir validate --no-check-all --ansi\n");
+        passthru("composer -n --working-dir=$scenarioDir validate --no-check-all --ansi", $status);
+        // print("composer -n --working-dir=$scenarioDir $scenarioCommand $extraOptions --prefer-dist --no-scripts\n");
+        if ($status != 0) {
+            return $status;
+        }
+        passthru("composer -n --working-dir=$scenarioDir $scenarioCommand $extraOptions --prefer-dist --no-scripts", $status);
+        return $status;
     }
 
     protected function determineDependenciesCommand($dependencies)
@@ -248,13 +252,13 @@ class Handler
     {
         $fs = new SymfonyFilesystem();
 
-        $scenarioDir = $this->scenarioLockDir($scenario, $dir);
+        $scenarioDir = static::scenarioLockDir($scenario, $dir);
         $fs->mkdir($scenarioDir);
 
         return $scenarioDir;
     }
 
-    protected function scenarioLockDir($scenario, $dir)
+    public static function scenarioLockDir($scenario, $dir)
     {
         if ($scenario == 'default') {
             return $dir;

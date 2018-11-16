@@ -23,7 +23,7 @@
         "scenarios": {
             "semver10": {
                 "require": {
-                    "composer/semver": "~1.0"
+                    "composer/semver": "~1.0.0"
                 },
                 "scenario-options": {
                     "create-lockfile": "true"
