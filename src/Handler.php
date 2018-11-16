@@ -113,8 +113,75 @@ class Handler
 
     public function updateScenarios($dir)
     {
+        // Save data in vendor that might be overwritten by scenario creation
+        $save = $this->saveVendorState($dir);
+
         $this->scenariosFromExtra($dir);
         $this->callDefineScenariosCmd();
+
+        // Restore saved data in vendor
+        $this->restoreVendorState($dir, $save);
+    }
+
+    protected function saveVendorState($dir)
+    {
+        $path = $this->pathToInstalled($dir);
+        if (file_exists($path)) {
+            return file_get_contents($path);
+        }
+    }
+
+    protected function restoreVendorState($dir, $save)
+    {
+        if (empty($save)) {
+            return;
+        }
+        $path = $this->pathToInstalled($dir);
+        if (file_exists($path)) {
+            return file_put_contents($path, $save);
+        }
+    }
+
+    protected function pathToInstalled($dir)
+    {
+        return "$dir/vendor/composer/installed.json";
+    }
+
+    public function installScenario($scenario, $dependencies, $dir)
+    {
+        $scenarioDir = $this->scenarioLockDir($dir) . "/$scenario";
+        if (!is_dir($scenarioDir)) {
+            throw new \Exception("The scenario '$scenario' does not exist.");
+        }
+        list($scenarioCommand, $extraOptions) = $this->determineDependenciesCommand($dependencies);
+
+        passthru("composer -n --working-dir=$dir validate --no-check-all --ansi");
+        passthru("composer -n --working-dir=$dir $scenarioCommand $extraOptions --prefer-dist --no-scripts");
+
+        // If called from a CI context, print out some extra information about
+        // what we just installed.
+        if (getenv("CI")) {
+            passthru("composer -n --working-dir=$dir info");
+        }
+    }
+
+    protected function determineDependenciesCommand($dependencies)
+    {
+        $dependency_map = [
+            'highest' => ['update', ''],
+            'lowest' => ['update', '--prefer-lowest'],
+            'default' => ['install', ''],
+        ];
+
+        if (($dependencies == 'install') || ($dependencies == 'lock')) {
+            $dependencies = 'default';
+        }
+
+        if (!array_key_exists($dependencies, $dependency_map)) {
+            throw new \Exception("The dependencies option $dependencies is not valid.");
+        }
+
+        return $dependency_map[$dependencies];
     }
 
     /**
@@ -154,17 +221,20 @@ class Handler
     {
         $gitignore = ['vendor'];
 
+        $this->composer('config', $scenarioDir, ['vendor-dir', '../../vendor']);
+
         if ($create_lockfile) {
-            $this->composer('config', $scenarioDir, ['vendor-dir', 'vendor']);
+
             putenv("COMPOSER_HOME=$dir");
             putenv("COMPOSER_HTACCESS_PROTECT=0");
             putenv("COMPOSER_CACHE_DIR={$this->composer_home}/cache");
             $this->composer('update:lock', $scenarioDir, []);
+
+            // $this->composer('update', $scenarioDir, []);
         }
         else {
             $gitignore[] = 'composer.lock';
         }
-        $this->composer('config', $scenarioDir, ['vendor-dir', '../../vendor']);
 
         file_put_contents($scenarioDir . '/.gitignore', implode("\n", $gitignore));
     }
@@ -182,12 +252,17 @@ class Handler
     {
         $fs = new SymfonyFilesystem();
 
-        $scenarioDir = $dir . '/.scenarios.lock';
+        $scenarioDir = $this->scenarioLockDir($dir);
         $fs->mkdir($scenarioDir);
         $scenarioDir .= "/$scenario";
         $fs->mkdir($scenarioDir);
 
         return $scenarioDir;
+    }
+
+    protected function scenarioLockDir($dir)
+    {
+        return "$dir/.scenarios.lock";
     }
 
     protected function adjustPaths($composerData)
