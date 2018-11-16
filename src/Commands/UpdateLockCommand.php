@@ -86,8 +86,7 @@ EOT
 
         $noop = new NoopInstaller();
 
-        try
-        {
+        try {
             $composer->getInstallationManager()->addInstaller($noop);
 
             $install = Installer::create($io, $composer);
@@ -117,7 +116,7 @@ EOT
             ;
 
             $result = $install->run();
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         } finally {
             $composer->getInstallationManager()->removeInstaller($noop);

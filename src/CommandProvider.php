@@ -16,12 +16,13 @@ class CommandProvider implements CommandProviderCapability
       /**
        * {@inheritdoc}
        */
-      public function getCommands() {
-            return [
-                new CreateScenarioCommand(),
-                new ScenarioCommand(),
-                new UpdateScenarioCommand(),
-                new UpdateLockCommand(),
-            ];
-      }
+    public function getCommands()
+    {
+        return [
+            new CreateScenarioCommand(),
+            new ScenarioCommand(),
+            new UpdateScenarioCommand(),
+            new UpdateLockCommand(),
+        ];
+    }
 }

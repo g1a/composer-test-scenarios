@@ -57,7 +57,7 @@ class Handler
     {
         $this->composer = $composer;
         $this->io = $io;
-        $this->progress = TRUE;
+        $this->progress = true;
         $this->composer_home = getenv('COMPOSER_HOME');
     }
 
@@ -77,12 +77,11 @@ class Handler
      */
     public function onCmdBeginsEvent(CommandEvent $event)
     {
-      if ($event->getInput()->hasOption('no-progress')) {
-          $this->progress = !($event->getInput()->getOption('no-progress'));
-      }
-      else {
-          $this->progress = TRUE;
-      }
+        if ($event->getInput()->hasOption('no-progress')) {
+            $this->progress = !($event->getInput()->getOption('no-progress'));
+        } else {
+            $this->progress = true;
+        }
     }
 
     /**
@@ -224,15 +223,13 @@ class Handler
         $this->composer('config', $scenarioDir, ['vendor-dir', '../../vendor']);
 
         if ($create_lockfile) {
-
             putenv("COMPOSER_HOME=$dir");
             putenv("COMPOSER_HTACCESS_PROTECT=0");
             putenv("COMPOSER_CACHE_DIR={$this->composer_home}/cache");
             $this->composer('update:lock', $scenarioDir, []);
 
             // $this->composer('update', $scenarioDir, []);
-        }
-        else {
+        } else {
             $gitignore[] = 'composer.lock';
         }
 
@@ -333,7 +330,9 @@ class Handler
 
     protected function composer($command, $dir, $args)
     {
-        $escapedArgs = implode(' ', array_map(function ($item) { return escapeshellarg($item); }, $args));
+        $escapedArgs = implode(' ', array_map(function ($item) {
+            return escapeshellarg($item);
+        }, $args));
         $cmd = "composer -n $command --working-dir=$dir " . $escapedArgs;
 
         if ($this->io->isVerbose()) {
@@ -343,8 +342,7 @@ class Handler
         $output = '';
         if ($this->io->isVeryVerbose()) {
             passthru($cmd, $status);
-        }
-        else {
+        } else {
             exec($cmd . ' 2>&1', $output, $status);
             $output = implode("\n", $output);
         }
@@ -413,7 +411,8 @@ class Handler
         return array_filter($data + $result[$key]);
     }
 
-    protected function getScenarioDefinitions() {
+    protected function getScenarioDefinitions()
+    {
         $extra = $this->composer->getPackage()->getExtra() + ['scenarios' => []];
         return $extra['scenarios'];
     }

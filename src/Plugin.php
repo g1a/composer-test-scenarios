@@ -46,7 +46,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface, Capable
     /**
      * {@inheritdoc}
      */
-    public function getCapabilities() {
+    public function getCapabilities()
+    {
         return [
             'Composer\Plugin\Capability\CommandProvider' => 'ComposerTestScenarios\CommandProvider',
         ];
@@ -55,7 +56,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface, Capable
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents()
+    {
         return [
             ScriptEvents::POST_UPDATE_CMD => 'postUpdate',
             PluginEvents::COMMAND => 'cmdBegins',
@@ -67,7 +69,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface, Capable
      *
      * @param \Composer\Plugin\CommandEvent $event
      */
-    public function cmdBegins(CommandEvent $event) {
+    public function cmdBegins(CommandEvent $event)
+    {
         $this->handler->onCmdBeginsEvent($event);
     }
 
@@ -76,7 +79,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface, Capable
      *
      * @param \Composer\Script\Event $event
      */
-    public function postUpdate(Event $event) {
+    public function postUpdate(Event $event)
+    {
         $this->handler->scenariosEvent($event);
     }
 }

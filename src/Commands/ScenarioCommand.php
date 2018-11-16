@@ -19,17 +19,18 @@ class ScenarioCommand extends BaseCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure() {
+    protected function configure()
+    {
         parent::configure();
         $this
           ->setName('scenario')
           ->setDescription('Install a scenario.')
           ->setDefinition(
-                new InputDefinition([
+              new InputDefinition([
                     new InputArgument('scenario', InputArgument::OPTIONAL),
                     new InputArgument('dependencies', InputArgument::OPTIONAL),
                 ])
-            );
+          );
     }
 
     /**

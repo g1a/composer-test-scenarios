@@ -16,7 +16,8 @@ class CreateScenarioCommand extends BaseCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure() {
+    protected function configure()
+    {
         parent::configure();
         $this
           ->setName('scenario:create')
