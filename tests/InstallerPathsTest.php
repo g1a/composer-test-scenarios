@@ -26,7 +26,7 @@ class InstallerPathsTest extends TestCase
         // Check the scenario directory
 
         $scenarioDir = \ComposerTestScenarios\Handler::scenarioLockDir('semver10', $testProjectDir);
-        $this->assertDirectoryExists($scenarioDir);
+        $this->assertTrue(is_dir($scenarioDir));
 
         // The scenario directory should be different than the base directory
         $this->assertNotEquals($testProjectDir, $scenarioDir);
