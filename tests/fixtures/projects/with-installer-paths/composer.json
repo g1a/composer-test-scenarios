@@ -26,9 +26,19 @@
                     "composer/semver": "~1.0.0"
                 },
                 "scenario-options": {
-                    "create-lockfile": "true"
+                    "create-lockfile": "false"
                 }
             }
+        },
+        "installer-paths": {
+            "core": ["type:drupal-core"],
+            "libraries/{$name}": ["type:drupal-library"],
+            "modules/unish/{$name}": ["drupal/devel"],
+            "themes/unish/{$name}": ["drupal/empty_theme"],
+            "modules/contrib/{$name}": ["type:drupal-module"],
+            "profiles/contrib/{$name}": ["type:drupal-profile"],
+            "themes/contrib/{$name}": ["type:drupal-theme"],
+            "drush/contrib/{$name}": ["type:drupal-drush"]
         }
     }
 }

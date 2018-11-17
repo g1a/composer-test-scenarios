@@ -26,8 +26,11 @@ trait Fixtures
 
     protected function replacements()
     {
+        $branch = exec('git rev-parse --abbrev-ref HEAD');
+
         return [
             '__SUT__' => $this->sut(),
+            '__BRANCH__' => $branch,
         ];
     }
 

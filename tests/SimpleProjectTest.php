@@ -27,6 +27,12 @@ class SimpleProjectTest extends TestCase
         $scenarioDir = \ComposerTestScenarios\Handler::scenarioLockDir('semver10', $testProjectDir);
         $this->assertDirectoryExists($scenarioDir);
 
+        // The scenario directory should be different than the base directory
+        $this->assertNotEquals($testProjectDir, $scenarioDir);
+
+        // There shouldn't be any composer.lock
+        $this->assertFileExists($scenarioDir . '/composer.lock');
+
         list($output, $status) = $this->composer('scenario', $testProjectDir, ['semver10']);
         $this->assertEquals(0, $status);
 
