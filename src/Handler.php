@@ -59,6 +59,9 @@ class Handler
         $this->io = $io;
         $this->progress = true;
         $this->composer_home = getenv('COMPOSER_HOME');
+        if (empty($this->composer_home)) {
+            $this->composer_home = getenv('HOME') . '/.composer';
+        }
     }
 
     /**
@@ -195,6 +198,7 @@ class Handler
      */
     protected function scenariosFromExtra($dir)
     {
+        $this->copyInstallScenarioScript($dir);
         $scenarios = $this->getScenarioDefinitions();
         if (empty($scenarios)) {
             $this->io->write("No scenarios in 'extra' section.");
@@ -207,8 +211,6 @@ class Handler
         foreach ($scenarios as $scenario => $scenarioData) {
             $this->createScenario($scenario, $scenarioData, $composerJsonData, $dir);
         }
-
-        $this->copyInstallScenarioScript($dir);
     }
 
     protected function createScenario($scenario, $scenarioData, $composerJsonData, $dir)
@@ -232,12 +234,8 @@ class Handler
         if ($create_lockfile) {
             putenv("COMPOSER_HOME=$dir");
             putenv("COMPOSER_HTACCESS_PROTECT=0");
-            if (!empty($this->composer_home)) {
-                putenv("COMPOSER_CACHE_DIR={$this->composer_home}/cache");
-            }
+            putenv("COMPOSER_CACHE_DIR={$this->composer_home}/cache");
             $this->composer('update:lock', $scenarioDir, []);
-
-            // $this->composer('update', $scenarioDir, []);
         } else {
             $gitignore[] = 'composer.lock';
         }
@@ -248,7 +246,7 @@ class Handler
     protected function copyInstallScenarioScript($dir)
     {
         $installScenarioScript = file_get_contents(__DIR__ . '/../scripts/install-scenario');
-        file_put_contents($dir . '/install', $installScenarioScript);
+        file_put_contents($dir . '/.scenarios.lock/install', $installScenarioScript);
     }
 
     protected function setupScenario($scenario, $scenarioData, $dir)
