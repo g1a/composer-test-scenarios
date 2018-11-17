@@ -117,10 +117,12 @@ EOT
 
             $result = $install->run();
         } catch (Exception $e) {
-            throw $e;
-        } finally {
             $composer->getInstallationManager()->removeInstaller($noop);
+            throw $e;
         }
+        // 'finally' is available in php 5.5 and later
+        $composer->getInstallationManager()->removeInstaller($noop);
+
         return $result;
     }
 }
