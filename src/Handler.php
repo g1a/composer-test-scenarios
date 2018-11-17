@@ -246,7 +246,7 @@ class Handler
     protected function copyInstallScenarioScript($dir)
     {
         $installScriptPath = $dir . '/.scenarios.lock/install';
-        mkdir(dirname($installScriptPath));
+        @mkdir(dirname($installScriptPath));
         $installScenarioScript = file_get_contents(__DIR__ . '/../scripts/install-scenario');
         file_put_contents($installScriptPath, $installScenarioScript);
         chmod($installScriptPath, 0755);
