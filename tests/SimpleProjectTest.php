@@ -44,7 +44,7 @@ class SimpleProjectTest extends TestCase
         // Return to the 'default' scenario
 
         $scenarioDir = \ComposerTestScenarios\Handler::scenarioLockDir('default', $testProjectDir);
-        $this->assertDirectoryExists($scenarioDir);
+        $this->assertTrue(is_dir($scenarioDir));
 
         list($output, $status) = $this->composer('scenario', $testProjectDir, ['default']);
         $this->assertEquals(0, $status);
