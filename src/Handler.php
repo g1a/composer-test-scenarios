@@ -112,8 +112,6 @@ class Handler
 
     public function updateScenarios($dir)
     {
-        $this->io->write('Update scenarios');
-
         // Save data in vendor that might be overwritten by scenario creation
         $save = $this->saveVendorState($dir);
 
@@ -204,6 +202,8 @@ class Handler
         foreach ($scenarios as $scenario => $scenarioData) {
             $this->createScenario($scenario, $scenarioData, $composerJsonData, $dir);
         }
+
+        $this->copyInstallScenarioScript($dir);
     }
 
     protected function createScenario($scenario, $scenarioData, $composerJsonData, $dir)
@@ -236,6 +236,12 @@ class Handler
         }
 
         file_put_contents($scenarioDir . '/.gitignore', implode("\n", $gitignore));
+    }
+
+    protected function copyInstallScenarioScript($dir)
+    {
+        $installScenarioScript = file_get_contents(__DIR__ . '/../scripts/install-scenario');
+        file_put_contents($dir . '/install', $installScenarioScript);
     }
 
     protected function setupScenario($scenario, $scenarioData, $dir)
