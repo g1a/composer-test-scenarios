@@ -1,8 +1,16 @@
 # Changelog
 
+### 3.0.0 - tbd
+
+* Converted to a Composer Installer
+* `autoload` and `autoload-dev` paths now automatically handled.
+* `installer-paths` are now automatically relocated.
+* Copies of the `vendor` directory no longer created in scenario directories.
+* Scenario definitions are now listed in `extra`.`scenarios` rather than via a `post-update-cmd` script.
+
 ### 2.1.0 - 2018-06-10
 
-* Allos projects to store scenarios in either the original location, "scenarios", or in the new recommended location, ".scenarios.lock". Projects must be converted manually.
+* Allows projects to store scenarios in either the original location, "scenarios", or in the new recommended location, ".scenarios.lock". Projects must be converted manually.
 
 ### 2.0.0 - 2018-03-18
 

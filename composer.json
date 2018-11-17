@@ -1,6 +1,7 @@
 {
     "name": "g1a/composer-test-scenarios",
     "description": "Useful scripts for testing multiple sets of Composer dependencies.",
+    "type": "composer-plugin",
     "license": "MIT",
     "authors": [
         {
@@ -9,10 +10,53 @@
         }
     ],
     "require": {
+        "php": ">5.4",
+        "composer-plugin-api": "^1.0.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8.36|^6",
+        "php-coveralls/php-coveralls": "^1.0",
+        "squizlabs/php_codesniffer": "^2.8",
+        "composer/composer": "^1.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "ComposerTestScenarios\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ComposerTestScenarios\\": "tests/src/"
+        }
+    },
+    "extra": {
+        "class": "ComposerTestScenarios\\Plugin",
+        "branch-alias": {
+            "dev-master": "3.x-dev"
+        }
+    },
+    "scripts": {
+        "cs": "phpcs --standard=PSR2 -n src",
+        "cbf": "phpcbf --standard=PSR2 -n src",
+        "unit": "phpunit --colors=always",
+        "lint": [
+            "find src -name '*.php' -print0 | xargs -0 -n1 php -l",
+            "find tests/src -name '*.php' -print0 | xargs -0 -n1 php -l"
+        ],
+        "test": [
+            "@lint",
+            "@unit",
+            "@cs"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "platform": {
+            "php": "7.0.8"
+        }
     },
     "bin": [
-        "scripts/create-scenario",
-        "scripts/dependency-licenses",
-        "scripts/install-scenario"
+        "scripts/dependency-licenses"
     ]
 }
