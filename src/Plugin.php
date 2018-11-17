@@ -81,6 +81,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface, Capable
      */
     public function postUpdate(Event $event)
     {
+        print "\n=========== post update! ============\n";
         $this->handler->scenariosEvent($event);
     }
 }

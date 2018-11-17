@@ -57,8 +57,6 @@
         }
     },
     "bin": [
-        "scripts/create-scenario",
-        "scripts/dependency-licenses",
-        "scripts/install-scenario"
+        "scripts/dependency-licenses"
     ]
 }

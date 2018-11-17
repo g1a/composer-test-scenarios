@@ -112,6 +112,8 @@ class Handler
 
     public function updateScenarios($dir)
     {
+        $this->io->write('Update scenarios');
+
         // Save data in vendor that might be overwritten by scenario creation
         $save = $this->saveVendorState($dir);
 
