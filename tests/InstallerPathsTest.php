@@ -20,7 +20,7 @@ class InstallerPathsTest extends TestCase
 
         // Run 'composer update' to build the scenario directories
         list($output, $status) = $this->composer('update', $testProjectDir);
-        $this->assertEquals('', $output);
+        $this->assertNotContains('Your requirements could not be resolved to an installable set of packages.', $output);
         $this->assertEquals(0, $status);
 
         // Check the scenario directory

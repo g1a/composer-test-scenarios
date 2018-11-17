@@ -27,6 +27,9 @@ trait Fixtures
     protected function replacements()
     {
         $branch = exec('git rev-parse --abbrev-ref HEAD');
+        if ($branch == 'HEAD') {
+            $branch = 'master';
+        }
 
         return [
             '__SUT__' => $this->sut(),
