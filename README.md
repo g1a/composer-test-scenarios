@@ -14,25 +14,34 @@ Scenarios are defined in the `scenarios` section of the `extras` block of the co
                 "require": {
                     "symfony/console": "^4.0"
                 },
-                "platform": {
-                    "php": "7.1.3"
+                "config": {
+                    "platform": {
+                        "php": "7.1.3"
+                    }
                 }
             },
             "symfony2": {
                 "require": {
                     "symfony/console": "^2.8"
                 },
-                "platform": {
-                    "php": "5.4"
+                "config": {
+                    "platform": {
+                        "php": "5.4.8"
+                    }
                 },
                 "scenario-options": {
                     "create-lockfile": "false"
                 }
             },
             "phpunit4": {
-                "require": {
+                "require-dev": {
                     "phpunit/phpunit": "^4.8.36"
                 },
+                "config": {
+                    "platform": {
+                        "php": "5.4.8"
+                    }
+                }
             }
         },
         ...

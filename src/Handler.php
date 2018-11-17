@@ -115,8 +115,13 @@ class Handler
         // Save data in vendor that might be overwritten by scenario creation
         $save = $this->saveVendorState($dir);
 
-        $this->scenariosFromExtra($dir);
-        $this->callDefineScenariosCmd();
+        try {
+            $this->scenariosFromExtra($dir);
+            $this->callDefineScenariosCmd();
+        } catch (\Exception $e) {
+            $this->restoreVendorState($dir, $save);
+            throw $e;
+        }
 
         // Restore saved data in vendor
         $this->restoreVendorState($dir, $save);
@@ -227,7 +232,9 @@ class Handler
         if ($create_lockfile) {
             putenv("COMPOSER_HOME=$dir");
             putenv("COMPOSER_HTACCESS_PROTECT=0");
-            putenv("COMPOSER_CACHE_DIR={$this->composer_home}/cache");
+            if (!empty($this->composer_home)) {
+                putenv("COMPOSER_CACHE_DIR={$this->composer_home}/cache");
+            }
             $this->composer('update:lock', $scenarioDir, []);
 
             // $this->composer('update', $scenarioDir, []);
