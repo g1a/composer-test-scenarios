@@ -25,13 +25,13 @@ class SimpleProjectTest extends TestCase
 
         // Test scenario 'semver10'
 
-        $scenarioDir = \ComposerTestScenarios\Handler::scenarioLockDir('semver10', $testProjectDir);
+        $scenarioDir = \ComposerTestScenarios\Handler::scenarioLockDir($testProjectDir, 'semver10');
         $this->assertTrue(is_dir($scenarioDir));
 
         // The scenario directory should be different than the base directory
         $this->assertNotEquals($testProjectDir, $scenarioDir);
 
-        // There shouldn't be any composer.lock
+        // A lock file should be created
         $this->assertFileExists($scenarioDir . '/composer.lock');
 
         list($output, $status) = $this->composer('scenario', $testProjectDir, ['semver10']);
@@ -43,7 +43,7 @@ class SimpleProjectTest extends TestCase
 
         // Return to the 'default' scenario
 
-        $scenarioDir = \ComposerTestScenarios\Handler::scenarioLockDir('default', $testProjectDir);
+        $scenarioDir = \ComposerTestScenarios\Handler::scenarioLockDir($testProjectDir, 'default');
         $this->assertTrue(is_dir($scenarioDir));
 
         list($output, $status) = $this->composer('scenario', $testProjectDir, ['default']);

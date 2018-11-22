@@ -7,6 +7,8 @@
 * `installer-paths` are now automatically relocated.
 * Copies of the `vendor` directory no longer created in scenario directories.
 * Scenario definitions are now listed in `extra`.`scenarios` rather than via a `post-update-cmd` script.
+* Dependency licenses now automatically updated on `composer update`.
+* Scenarios directory is now always stored in ".scenarios.lock".
 
 ### 2.1.0 - 2018-06-10
 

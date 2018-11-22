@@ -72,6 +72,7 @@ Use the [example .travis.yml](example.travis.yml) file as a starting point for y
   - To do a **highest** test, set `DEPENDENCIES=highest`.
   - To do a **lowest** test, set `DEPENDENCIES=lowest`.
   - To do a **current** test, set `DEPENCENCIES=lock`, or leave it undefined.
+- Install the scenario to test using the `.scenarios.lock/install` script, as shown in [example .travis.yml](example.travis.yml).
 
 With this setup, all that you need to do to create your scenarios is to run `composer update`. Commit the entire contents of the generated `scenarios` directory. Thereafter, every subsequent time that you run `composer update`, your scenario lock files will also be brought up to date. Commit the changes to your scenarios directory whenever you commit your updated `composer.lock` file.
 
@@ -86,4 +87,10 @@ To go back to the default scenario, just run `composer install` (or `composer sc
 
 ## Scenarios folder
 
-Each scenario has its own `composer.lock` file (save for those scenarios created with the `--no-lockfile` option). These lock files are stored in the `.scenarios.lock` directory, which is created automatically by the `create-scenario` script. The contents of the scenarios directory should be committed to your repository, just like the `composer.lock` file is.
+Each scenario has its own `composer.lock` file (save for those scenarios created with the `"create-lockfile": "false"` option set). These lock files are stored in the `.scenarios.lock` directory, which is created automatically during `composer update` operations. The contents of the scenarios directory should be committed to your repository, just like the `composer.lock` file is.
+
+## Dependency Licenses
+
+Every time `composer update` is run, Composer Test Scenarios will run the `composer licenses` command and append the result to your project's LICENSE file (if any). The advantage of this is that prospective users will be able to confirm your project's licence compliance by browsing your LICENSE file.
+
+As an added service, the Copyright notice in your LICENSE file is also updated to include the current year, if it is not already mentioned in the Copyright notice.

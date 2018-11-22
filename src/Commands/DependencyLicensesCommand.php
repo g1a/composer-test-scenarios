@@ -4,6 +4,7 @@ namespace ComposerTestScenarios\Commands;
 use Composer\Command\BaseCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use ComposerTestScenarios\DependencyLicenses;
 
 /**
  * The "scenario:create" command class.
@@ -11,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Writes a 'scenario' directory to disk. This happens once per scenario
  * as part of the `scenario:update` process.
  */
-class CreateScenarioCommand extends BaseCommand
+class DependencyLicensesCommand extends BaseCommand
 {
     /**
      * {@inheritdoc}
@@ -20,8 +21,8 @@ class CreateScenarioCommand extends BaseCommand
     {
         parent::configure();
         $this
-          ->setName('scenario:create')
-          ->setDescription('Create a scenario.');
+          ->setName('dependency-licenses')
+          ->setDescription("Add information about the licenses used by project's dependencies to its LICENSE file.");
     }
 
     /**
@@ -29,14 +30,13 @@ class CreateScenarioCommand extends BaseCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('scenario:create ready to be implemented! :P');
+        $dir = getcwd();
+        $dependencyLicenses = new DependencyLicenses();
 
-        $composer = $this->getComposer();
-        $target = getcwd();
+        $result = $dependencyLicenses->update($dir);
 
-        $output->writeln('Target is ' . $target);
-
-
-        // $handler = new Handler($this->getComposer(), $this->getIO());
+        if ($result) {
+            $output->writeln('Updated dependency licenses.');
+        }
     }
 }

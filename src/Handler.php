@@ -130,6 +130,14 @@ class Handler
         $this->restoreVendorState($dir, $save);
     }
 
+    public function dependencyLicenses($dir)
+    {
+        $dependencyLicenses = new DependencyLicenses();
+
+        // Ignore errors
+        $dependencyLicenses->update($dir);
+    }
+
     protected function saveVendorState($dir)
     {
         $path = $this->pathToInstalled($dir);
@@ -156,7 +164,7 @@ class Handler
 
     public function installScenario($scenario, $dependencies, $dir)
     {
-        $scenarioDir = static::scenarioLockDir($scenario, $dir);
+        $scenarioDir = static::scenarioLockDir($dir, $scenario);
         if (!is_dir($scenarioDir)) {
             throw new \Exception("The scenario '$scenario' does not exist.");
         }
@@ -198,19 +206,52 @@ class Handler
      */
     protected function scenariosFromExtra($dir)
     {
-        $this->copyInstallScenarioScript($dir);
+        $this->autoUpgrade($dir);
         $scenarios = $this->getScenarioDefinitions();
+        $scenarioOptions = $this->getScenarioOptions();
         if (empty($scenarios)) {
             $this->io->write("No scenarios in 'extra' section.");
             return;
+        }
+
+        if (empty($scenarioOptions['no-install-script'])) {
+            $this->copyInstallScenarioScript($dir);
         }
 
         $composerJsonData = $this->readComposerJson($dir);
 
         // Create each scenaro
         foreach ($scenarios as $scenario => $scenarioData) {
-            $this->createScenario($scenario, $scenarioData, $composerJsonData, $dir);
+            $this->createScenario($scenario, $scenarioData + ['scenario-options' => $scenarioOptions], $composerJsonData, $dir);
         }
+
+        if (!empty($scenarioOptions['dependency-licenses'])) {
+            $this->dependencyLicenses($dir);
+        }
+    }
+
+    /**
+     * autoUpgrade will convert from an older version of Composer Test Scenarios
+     * to a 3.x version. At the moment, only minor adjustments are made. The
+     * main work -- converting from create-scenario scripts to scenario data
+     * is not done yet.
+     */
+    protected function autoUpgrade($dir)
+    {
+        if (!is_dir("$dir/scenarios")) {
+            return;
+        }
+
+        $fs = new SymfonyFilesystem();
+        $fs->remove("$dir/scenarios");
+
+        $travisYmlPath = "$dir/.travis.yml";
+        if (!file_exists($travisYmlPath)) {
+            return;
+        }
+        $travisContents = file_get_contents($travisYmlPath);
+        $travisContents = str_replace('scenarios/install', '.scenarios.lock/install', $travisContents);
+        file_put_contents($travisYmlPath, $travisContents);
     }
 
     protected function createScenario($scenario, $scenarioData, $composerJsonData, $dir)
@@ -218,7 +259,7 @@ class Handler
         $this->io->write("Create scenario '$scenario'.");
         list($scenarioData, $scenarioOptions) = $this->applyScenarioData($composerJsonData, $scenarioData);
 
-        $scenarioDir = $this->createScenarioDir($scenario, $dir);
+        $scenarioDir = $this->createScenarioDir($dir, $scenario);
 
         $scenarioData = $this->adjustPaths($scenarioData);
         $this->writeComposerData($scenarioData, $scenarioDir);
@@ -245,8 +286,8 @@ class Handler
 
     protected function copyInstallScenarioScript($dir)
     {
-        $installScriptPath = $dir . '/.scenarios.lock/install';
-        @mkdir(dirname($installScriptPath));
+        $scenarioDir = $this->createScenarioDir($dir);
+        $installScriptPath = "$scenarioDir/install";
         $installScenarioScript = file_get_contents(__DIR__ . '/../scripts/install-scenario');
         file_put_contents($installScriptPath, $installScenarioScript);
         chmod($installScriptPath, 0755);
@@ -256,22 +297,24 @@ class Handler
     {
         $composerJsonData = $this->readComposerJson($dir);
         list($scenarioData, $scenarioOptions) = $this->applyScenarioData($composerJsonData, $scenarioData);
-        $scenarioDir = $this->createScenarioDir($scenario, $dir);
+        $scenarioDir = $this->createScenarioDir($dir, $scenario);
         $scenarioData = $this->adjustPaths($scenarioData);
         $this->writeComposerData($scenarioData, $scenarioDir);
     }
 
-    protected function createScenarioDir($scenario, $dir)
+    protected function createScenarioDir($dir, $scenario = '')
     {
         $fs = new SymfonyFilesystem();
 
-        $scenarioDir = static::scenarioLockDir($scenario, $dir);
-        $fs->mkdir($scenarioDir);
+        $scenarioDir = static::scenarioLockDir($dir, $scenario);
+        if (!file_exists($scenarioDir)) {
+            $fs->mkdir($scenarioDir);
+        }
 
         return $scenarioDir;
     }
 
-    public static function scenarioLockDir($scenario, $dir)
+    public static function scenarioLockDir($dir, $scenario = '')
     {
         if ($scenario == 'default') {
             return $dir;
@@ -431,6 +474,20 @@ class Handler
     {
         $extra = $this->composer->getPackage()->getExtra() + ['scenarios' => []];
         return $extra['scenarios'];
+    }
+
+    protected function getScenarioOptions()
+    {
+        $extra = $this->composer->getPackage()->getExtra() + ['scenario-options' => []];
+        return array_filter($extra['scenario-options'] + $this->defaultGlobalOptions());
+    }
+
+    protected function defaultGlobalOptions()
+    {
+        return [
+            'no-install-script' => false,
+            'dependency-licenses' => true,
+        ];
     }
 
     protected function readComposerJson($dir)
