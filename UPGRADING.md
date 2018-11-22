@@ -43,3 +43,22 @@ Composer Test Scenarios now runs as needed after `composer update` commands; it 
 * `--remove`: Packages that should be removed from a scenario may be listed in a `remove` section of the scenario data.
 
 * `--keep`: Not currently implemented in 3.x.
+
+## Remove Incompatible Scripts
+
+If the `scripts` section of your composer.json file defines a "scenario" command, then delete it.
+
+## Updating Test Script
+
+Replace any occurance of:
+```
+composer scenario "${SCENARIO}" "${DEPENDENCIES}"
+```
+or
+```
+scenarios/install "${SCENARIO}" "${DEPENDENCIES}"
+```
+with:
+```
+.scenarios.lock/install "${SCENARIO}" "${DEPENDENCIES}"
+```

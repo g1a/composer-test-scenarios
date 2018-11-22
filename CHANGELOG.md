@@ -1,6 +1,6 @@
 # Changelog
 
-### 3.0.0 - tbd
+### 3.0.0 - 2018-11-21
 
 * Converted to a Composer Installer
 * `autoload` and `autoload-dev` paths now automatically handled.

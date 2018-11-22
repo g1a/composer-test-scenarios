@@ -94,3 +94,7 @@ Each scenario has its own `composer.lock` file (save for those scenarios created
 Every time `composer update` is run, Composer Test Scenarios will run the `composer licenses` command and append the result to your project's LICENSE file (if any). The advantage of this is that prospective users will be able to confirm your project's licence compliance by browsing your LICENSE file.
 
 As an added service, the Copyright notice in your LICENSE file is also updated to include the current year, if it is not already mentioned in the Copyright notice.
+
+## Upgrading
+
+If your project is already using an older version of Composer Test Scenarios, see [UPGRADING.md](UPGRADING.md).
