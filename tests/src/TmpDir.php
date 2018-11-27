@@ -40,7 +40,7 @@ class TmpDir
      * retain controls whether the temporary directories created by tests
      * should be retained ($value == true) or deleted ($value == false).
      */
-    public function retain($value = true)
+    public static function retain($value = true)
     {
         static::$retain = $value;
     }

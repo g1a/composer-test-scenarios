@@ -348,18 +348,15 @@ class Handler
      */
     protected function fixAutoloadPaths($autoloadData)
     {
-        // For now only do psr-4
-        if (!isset($autoloadData['psr-4'])) {
-            return $autoloadData;
+        $fixAutoloadFn = function ($path) {
+            return "../../$path";
+        };
+
+        foreach (['psr-4', 'files'] as $key) {
+            if (isset($autoloadData[$key])) {
+                $autoloadData[$key] = array_map($fixAutoloadFn, $autoloadData[$key]);
+            }
         }
-
-        $psr4 = [];
-
-        foreach ($autoloadData['psr-4'] as $namespace => $path) {
-            $psr4[$namespace] = "../../$path";
-        }
-
-        $autoloadData['psr-4'] = $psr4;
 
         return $autoloadData;
     }
