@@ -95,6 +95,18 @@ Every time `composer update` is run, Composer Test Scenarios will run the `compo
 
 As an added service, the Copyright notice in your LICENSE file is also updated to include the current year, if it is not already mentioned in the Copyright notice.
 
+## Commands
+
+Scenarios will be updated every time `composer update` is executed. However, you can manually invoke the various commands provided by this plugin, while avoiding running `composer update` on your project, which may be not desirable.
+
+`composer scenario:update`: Updates all scenarios defined in your composer.json file to the latest versions. If a specific scenario does not exist, it creates the lock folder.
+
+`composer scenario <name>` : Installs a scenario.
+
+`composer update:lock`: Upgrades your dependencies to the latest version according to composer.json without downloading any of them; only updates the composer.lock file.
+
+`composer dependency-licenses`: Adds information about the licenses used by project's dependencies to its LICENSE file.
+
 ## Upgrading
 
 If your project is already using an older version of Composer Test Scenarios, see [UPGRADING.md](UPGRADING.md).
