@@ -352,7 +352,7 @@ class Handler
             return "../../$path";
         };
 
-        foreach (['psr-4', 'files'] as $key) {
+        foreach (['psr-4', 'files', 'classmap'] as $key) {
             if (isset($autoloadData[$key])) {
                 $autoloadData[$key] = array_map($fixAutoloadFn, $autoloadData[$key]);
             }

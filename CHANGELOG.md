@@ -1,5 +1,9 @@
 # Changelog
 
+### 3.0.2 - 2019-02-11
+
+* Also fix up 'classmap' in autoload / autoload-dev ections.
+
 ### 3.0.1 - 2018-11-26
 
 * Also fix up autoload files in scenario autoload sections
