@@ -176,7 +176,12 @@ class Handler
         if ($status != 0) {
             return $status;
         }
-        passthru("composer -n --working-dir=$scenarioDir $scenarioCommand $extraOptions --prefer-dist", $status);
+
+        if ($scenarioCommand == 'update') {
+            passthru("composer -n --working-dir=$scenarioDir update $extraOptions --prefer-dist --no-scripts", $status);
+        }
+
+        passthru("composer -n --working-dir=$scenarioDir install $extraOptions --prefer-dist", $status);
         return $status;
     }
 
@@ -385,10 +390,10 @@ class Handler
 
     /**
      *   "patches": {
-     *       "drupal/field_collection": {
-     *           "HTTP patch": "https://www.drupal.org/files/issues/field_collection-null-values-on-editing-2662210-2-7.x-1.x.patch",
-     *           "Local patch": "patches/field_collectiion.patch"
-     *       }
+     *       "drupal/drupal": {
+     *          "Drupal.org patch": "https://www.drupal.org/files/issues/random-patch-999999-2.patch",
+     *          "Local patch": "patches/local.patch"
+     *      }
      *   }
      */
     protected function fixPatchesPaths($patchesPathData)
@@ -396,12 +401,12 @@ class Handler
         $result = [];
 
         foreach ($patchesPathData as $package => $patches) {
-            foreach ($patches as $info => $patch) {
-                if (filter_var($patch, FILTER_VALIDATE_URL)) {
-                    $result['package'][$info] = $path;
+            foreach ($patches as $info => $path) {
+                if (filter_var($path, FILTER_VALIDATE_URL)) {
+                    $result[$package][$info] = $path;
                 }
                 else {
-                    $result['package'][$info] = "../../$path";
+                    $result[$package][$info] = "../../$path";
                 }
             }
         }
