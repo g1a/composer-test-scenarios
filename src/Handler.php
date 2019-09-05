@@ -336,6 +336,10 @@ class Handler
             $composerData['autoload-dev'] = $this->fixAutoloadPaths($composerData['autoload-dev']);
         }
 
+        if (isset($composerData['extra']['preserve-paths'])) {
+            $composerData['extra']['preserve-paths'] = $this->fixPreservePaths($composerData['extra']['preserve-paths']);
+        }
+
         if (isset($composerData['extra']['installer-paths'])) {
             $composerData['extra']['installer-paths'] = $this->fixInstallerPaths($composerData['extra']['installer-paths']);
         }
@@ -368,6 +372,25 @@ class Handler
         }
 
         return $autoloadData;
+    }
+
+    /**
+     *     "preserve-paths": [
+     *       "web/sites/all/libraries",
+     *       "web/sites/all/modules/contrib",
+     *       "web/sites/all/themes/contrib",
+     *       "web/sites/default"
+     *   ],
+     */
+    protected function fixPreservePaths($preservePathsData)
+    {
+        $result = [];
+
+        foreach ($preservePathsData as $path) {
+            $result[] = "../../$path";
+        }
+
+        return $result;
     }
 
     /**
