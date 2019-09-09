@@ -1,0 +1,40 @@
+{
+    "name": "g1a/simple-project",
+    "description": "A test project for composer-test-scenarios.",
+    "license": "MIT",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "__SUT__"
+        }
+    ],
+    "require": {
+        "composer/semver": "^1.4"
+    },
+    "require-dev": {
+        "g1a/composer-test-scenarios": "dev-__BRANCH__"
+    },
+    "autoload": {
+        "psr-4": {
+            "ComposerTestScenarios\\": "src/"
+        }
+    },
+    "extra": {
+        "scenarios": {
+            "semver10": {
+                "require": {
+                    "composer/semver": "~1.0.0"
+                },
+                "scenario-options": {
+                    "create-lockfile": "false"
+                }
+            }
+        },
+        "patches": {
+            "composer/semver" : {
+                "Local patch" : "patches/local.patch",
+                "Drupal.org patch": "https://www.drupal.org/files/issues/random-patch-999999-2.patch"
+            }
+        }
+    }
+}
