@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "composer/semver": "^1.4"
+        "composer/semver": "~1.4.0"
     },
     "require-dev": {
         "g1a/composer-test-scenarios": "dev-__BRANCH__"
