@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "composer/semver": "~1.4.0"
+        "composer/semver": "^1.4"
     },
     "require-dev": {
         "g1a/composer-test-scenarios": "dev-__BRANCH__"
@@ -26,8 +26,14 @@
                     "composer/semver": "~1.0.0"
                 },
                 "scenario-options": {
-                    "create-lockfile": "true"
+                    "create-lockfile": "false"
                 }
+            }
+        },
+        "patches": {
+            "composer/semver" : {
+                "Local patch" : "patches/local.patch",
+                "URL patch": "file://test/directory/url.patch"
             }
         }
     }

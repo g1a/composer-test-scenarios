@@ -176,7 +176,12 @@ class Handler
         if ($status != 0) {
             return $status;
         }
-        passthru("composer -n --working-dir=$scenarioDir $scenarioCommand $extraOptions --prefer-dist --no-scripts", $status);
+
+        if ($scenarioCommand == 'update') {
+            passthru("composer -n --working-dir=$scenarioDir update $extraOptions --prefer-dist --no-scripts", $status);
+        }
+
+        passthru("composer -n --working-dir=$scenarioDir install $extraOptions --prefer-dist", $status);
         return $status;
     }
 
@@ -335,6 +340,10 @@ class Handler
             $composerData['extra']['installer-paths'] = $this->fixInstallerPaths($composerData['extra']['installer-paths']);
         }
 
+        if (isset($composerData['extra']['patches'])) {
+            $composerData['extra']['patches'] = $this->fixPatchesPaths($composerData['extra']['patches']);
+        }
+
         return $composerData;
     }
 
@@ -374,6 +383,31 @@ class Handler
 
         foreach ($installerPathData as $path => $types) {
             $result["../../$path"] = $types;
+        }
+
+        return $result;
+    }
+
+    /**
+     *   "patches": {
+     *       "drupal/drupal": {
+     *          "Drupal.org patch": "https://www.drupal.org/files/issues/random-patch-999999-2.patch",
+     *          "Local patch": "patches/local.patch"
+     *      }
+     *   }
+     */
+    protected function fixPatchesPaths($patchesPathData)
+    {
+        $result = [];
+
+        foreach ($patchesPathData as $package => $patches) {
+            foreach ($patches as $info => $path) {
+                if (filter_var($path, FILTER_VALIDATE_URL)) {
+                    $result[$package][$info] = $path;
+                } else {
+                    $result[$package][$info] = "../../$path";
+                }
+            }
         }
 
         return $result;
