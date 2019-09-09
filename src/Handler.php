@@ -404,8 +404,7 @@ class Handler
             foreach ($patches as $info => $path) {
                 if (filter_var($path, FILTER_VALIDATE_URL)) {
                     $result[$package][$info] = $path;
-                }
-                else {
+                } else {
                     $result[$package][$info] = "../../$path";
                 }
             }
