@@ -41,7 +41,7 @@ class PatchesTest extends TestCase
         $expected = '../../patches/local.patch';
         $this->assertContains($expected, $generatedComposerFile);
 
-        $incorrectUrl = '../../https://www.drupal.org/files/issues/random-patch-999999-2.patch';
+        $incorrectUrl = '../../file://test/directory/url.patch';
         $this->assertNotContains($incorrectUrl, $generatedComposerFile);
     }
 }

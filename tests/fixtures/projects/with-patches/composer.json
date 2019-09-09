@@ -33,7 +33,7 @@
         "patches": {
             "composer/semver" : {
                 "Local patch" : "patches/local.patch",
-                "Drupal.org patch": "https://www.drupal.org/files/issues/random-patch-999999-2.patch"
+                "URL patch": "file://test/directory/url.patch"
             }
         }
     }
