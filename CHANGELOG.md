@@ -1,5 +1,10 @@
 # Changelog
 
+### 3.0.3 - 2019-09-10
+
+* Added support for drupal-composer/preserve-paths. (#10)
+* Scenarios are incompatible with composer-patches plugin (#9)
+
 ### 3.0.2 - 2019-02-11
 
 * Also fix up 'classmap' in autoload / autoload-dev ections.
