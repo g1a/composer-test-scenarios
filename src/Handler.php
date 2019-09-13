@@ -214,13 +214,14 @@ class Handler
         $this->autoUpgrade($dir);
         $scenarios = $this->getScenarioDefinitions();
         $scenarioOptions = $this->getScenarioOptions();
-        if (empty($scenarios)) {
-            $this->io->write("No scenarios in 'extra' section.");
-            return;
-        }
 
         if (empty($scenarioOptions['no-install-script'])) {
             $this->copyInstallScenarioScript($dir);
+        }
+
+        if (empty($scenarios)) {
+            $this->io->write("No scenarios in 'extra' section.");
+            return;
         }
 
         $composerJsonData = $this->readComposerJson($dir);
