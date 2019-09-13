@@ -1,5 +1,9 @@
 # Changelog
 
+### 3.0.4 - 2019-09-12
+
+* Write the 'install' script even if there are no scenarios
+
 ### 3.0.3 - 2019-09-10
 
 * Added support for drupal-composer/preserve-paths. (#10)
