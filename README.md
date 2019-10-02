@@ -65,14 +65,14 @@ Composer Test Scenarios solves this problem by making it easy to do this.
 
 #### Install scenarios
 
-Use the [example .travis.yml](example.travis.yml) file as a starting point for your tests. Alter the test matrix as necessary to test highest, current and/or lowest dependencies as desired for each of the scenarios. Any scenario referenced in your `.travis.yml` file must be defined in your `composer.json` file. The Travis test matrix will define the php version to use in the test, the scenario to use, and whether to do a lowest, current or highest test.
+Use the [example .travis.yml](example-travis.yml) file as a starting point for your tests. Alter the test matrix as necessary to test highest, current and/or lowest dependencies as desired for each of the scenarios. Any scenario referenced in your `.travis.yml` file must be defined in your `composer.json` file. The Travis test matrix will define the php version to use in the test, the scenario to use, and whether to do a lowest, current or highest test.
 
 - Define the `SCENARIO` environment variable to name the scenario to test. If this variable is not defined, then the composer.json / composer.lock at the root of the project will be used for the test run.
 - Use the `HIGHEST_LOWEST` environment variable to specify whether a lowest, current or highest test should be done.
   - To do a **highest** test, set `DEPENDENCIES=highest`.
   - To do a **lowest** test, set `DEPENDENCIES=lowest`.
   - To do a **current** test, set `DEPENCENCIES=lock`, or leave it undefined.
-- Install the scenario to test using the `.scenarios.lock/install` script, as shown in [example .travis.yml](example.travis.yml).
+- Install the scenario to test using the `.scenarios.lock/install` script, as shown in [example .travis.yml](example-travis.yml).
 
 With this setup, all that you need to do to create your scenarios is to run `composer update`. Commit the entire contents of the generated `scenarios` directory. Thereafter, every subsequent time that you run `composer update`, your scenario lock files will also be brought up to date. Commit the changes to your scenarios directory whenever you commit your updated `composer.lock` file.
 
