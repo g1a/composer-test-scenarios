@@ -346,7 +346,7 @@ class Handler
         }
 
         if (isset($composerData['extra']['drupal-scaffold']['locations']['web-root'])) {
-            $composerData['extra']['drupal-scaffold']['locations']['web-root'] = $this->fixPaths($composerData['extra']['drupal-scaffold']['locations']['web-root']);
+            $composerData['extra']['drupal-scaffold']['locations']['web-root'] = $this->fixPath($composerData['extra']['drupal-scaffold']['locations']['web-root']);
         }
 
         if (isset($composerData['extra']['patches'])) {
