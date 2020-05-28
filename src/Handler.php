@@ -345,6 +345,10 @@ class Handler
             $composerData['extra']['installer-paths'] = $this->fixInstallerPaths($composerData['extra']['installer-paths']);
         }
 
+        if (isset($composerData['extra']['drupal-scaffold']['locations']['web-root'])) {
+            $composerData['extra']['drupal-scaffold']['locations']['web-root'] = $this->fixPaths($composerData['extra']['drupal-scaffold']['locations']['web-root']);
+        }
+
         if (isset($composerData['extra']['patches'])) {
             $composerData['extra']['patches'] = $this->fixPatchesPaths($composerData['extra']['patches']);
         }
@@ -363,7 +367,7 @@ class Handler
     protected function fixAutoloadPaths($autoloadData)
     {
         $fixAutoloadFn = function ($path) {
-            return "../../$path";
+            return $this->fixPath($path);
         };
 
         foreach (['psr-4', 'files', 'classmap'] as $key) {
@@ -388,7 +392,7 @@ class Handler
         $result = [];
 
         foreach ($preservePathsData as $path) {
-            $result[] = "../../$path";
+            $result[] = $this->fixPath($path);
         }
 
         return $result;
@@ -406,7 +410,7 @@ class Handler
         $result = [];
 
         foreach ($installerPathData as $path => $types) {
-            $result["../../$path"] = $types;
+            $result[$this->fixPath($path)] = $types;
         }
 
         return $result;
@@ -429,12 +433,27 @@ class Handler
                 if (filter_var($path, FILTER_VALIDATE_URL)) {
                     $result[$package][$info] = $path;
                 } else {
-                    $result[$package][$info] = "../../$path";
+                    $result[$package][$info] = $this->fixPath($path);
                 }
             }
         }
 
         return $result;
+    }
+
+    /**
+     * Alter one path
+     *
+     * @param string $path
+     *   A path, e.g. './web' or 'web'
+     *
+     * @return string
+     *   Path adjusted to compensate for composer.json moving to
+     *   .scenarios-lock/scenario/composer.json
+     */
+    protected function fixPath($path)
+    {
+        return '../../' . preg_replace('#^\./#', '', $path);
     }
 
     protected function writeComposerData($scenarioData, $scenarioDir)

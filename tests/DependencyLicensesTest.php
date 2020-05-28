@@ -21,7 +21,7 @@ class DependencyLicensesTest extends TestCase
         // Run 'composer update' to load our dependency-licenses command
         list($output, $status) = $this->composer('update', $testProjectDir);
         $this->assertNotContains('Your requirements could not be resolved to an installable set of packages.', $output);
-        $this->assertEquals(0, $status);
+        $this->assertEquals(0, $status, "Could not update $testProjectDir");
 
         // Check the scenario directory
 

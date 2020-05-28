@@ -13,6 +13,9 @@ trait RunComposer
 
         exec($cmd . ' 2>&1', $output, $status);
         $output = implode("\n", $output);
+        if ($status) {
+          fwrite(STDERR, $output);
+        }
         return [$output, $status];
     }
 }
