@@ -1,5 +1,15 @@
 # Changelog
 
+### 3.2.0 - 2020-09-28
+
+* Add Composer 2 / PHP 8 compatibility. (#14)
+
+### 3.1.0 / 3.1.1 - 2020-05-28
+
+* Change references to old default branch master to new default branch main
+* Update for drupal/core-composer-scaffold component. (#13)
+* Fix wrong path for example `.travis.yml` file (#12)
+
 ### 3.0.4 - 2019-09-12
 
 * Write the 'install' script even if there are no scenarios
