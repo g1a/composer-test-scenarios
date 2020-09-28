@@ -25,7 +25,7 @@ class PatchesTest extends TestCase
 
         // Check the scenario directory
 
-        $scenarioDir = \ComposerTestScenarios\Handler::scenarioLockDir($testProjectDir, 'semver10');
+        $scenarioDir = \ComposerTestScenarios\Handler::scenarioLockDir($testProjectDir, 'semver30');
         $this->assertTrue(is_dir($scenarioDir));
 
         // The scenario directory should be different than the base directory

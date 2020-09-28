@@ -23,9 +23,9 @@ class SimpleProjectTest extends TestCase
         $this->assertNotContains('Your requirements could not be resolved to an installable set of packages.', $output);
         $this->assertEquals(0, $status);
 
-        // Test scenario 'semver10'
+        // Test scenario 'semver30'
 
-        $scenarioDir = \ComposerTestScenarios\Handler::scenarioLockDir($testProjectDir, 'semver10');
+        $scenarioDir = \ComposerTestScenarios\Handler::scenarioLockDir($testProjectDir, 'semver30');
         $this->assertTrue(is_dir($scenarioDir));
 
         // The scenario directory should be different than the base directory
@@ -34,12 +34,12 @@ class SimpleProjectTest extends TestCase
         // A lock file should be created
         $this->assertFileExists($scenarioDir . '/composer.lock');
 
-        list($output, $status) = $this->composer('scenario', $testProjectDir, ['semver10']);
+        list($output, $status) = $this->composer('scenario', $testProjectDir, ['semver30']);
         $this->assertEquals(0, $status);
 
         list($output, $status) = $this->composer('info', $testProjectDir);
         $this->assertEquals(0, $status);
-        $this->assertRegExp('#^composer/semver *1.0.0#', $output);
+        $this->assertRegExp('#^composer/semver *3.0.1#', $output);
 
         // Return to the 'default' scenario
 
@@ -51,7 +51,7 @@ class SimpleProjectTest extends TestCase
 
         list($output, $status) = $this->composer('info', $testProjectDir);
         $this->assertEquals(0, $status);
-        $this->assertRegExp('#^composer/semver *1.4.2#', $output);
+        $this->assertRegExp('#^composer/semver *3.2.1#', $output);
 
         // Try to load a scenario that does not exist
 
