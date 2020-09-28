@@ -83,4 +83,18 @@ class Plugin implements PluginInterface, EventSubscriberInterface, Capable
     {
         $this->handler->scenariosEvent($event);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function deactivate(Composer $composer, IOInterface $io)
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function uninstall(Composer $composer, IOInterface $io)
+    {
+    }
 }

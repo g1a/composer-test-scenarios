@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "composer/semver": "^1.4"
+        "composer/semver": "^3.2"
     },
     "require-dev": {
         "g1a/composer-test-scenarios": "dev-__BRANCH__"
@@ -21,9 +21,9 @@
     },
     "extra": {
         "scenarios": {
-            "semver10": {
+            "semver30": {
                 "require": {
-                    "composer/semver": "~1.0.0"
+                    "composer/semver": "~3.0.0"
                 },
                 "scenario-options": {
                     "create-lockfile": "false"

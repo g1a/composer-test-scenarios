@@ -2,6 +2,7 @@
 namespace ComposerTestScenarios\Commands;
 
 use Composer\Composer;
+use Composer\DependencyResolver\Request;
 use Composer\Installer;
 use Composer\IO\IOInterface;
 use Composer\Plugin\CommandEvent;
@@ -13,7 +14,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Composer\Command\BaseCommand;
-
 use Composer\Installer\NoopInstaller;
 
 /**
@@ -99,21 +99,35 @@ EOT
                 ->setDevMode(!$input->getOption('no-dev'))
                 ->setDumpAutoloader(false)
                 ->setRunScripts(false)
-                ->setSkipSuggest(true)
                 ->setOptimizeAutoloader(false)
                 ->setClassMapAuthoritative(false)
                 ->setApcuAutoloader(false)
                 ->setUpdate(true)
-                ->setUpdateWhitelist($packages)
-                ->setWhitelistTransitiveDependencies($input->getOption('with-dependencies'))
-                ->setWhitelistAllDependencies($input->getOption('with-all-dependencies'))
                 ->setIgnorePlatformRequirements($input->getOption('ignore-platform-reqs'))
                 ->setPreferStable($input->getOption('prefer-stable'))
                 ->setPreferLowest($input->getOption('prefer-lowest'))
                 ->disablePlugins()
-                ->setExecuteOperations(false)
                 ->setWriteLock(true)
             ;
+            if (Composer::RUNTIME_API_VERSION === '1.0.0') {
+                $install
+                    ->setSkipSuggest(true)
+                    ->setWhitelistTransitiveDependencies($input->getOption('with-dependencies'))
+                    ->setWhitelistAllDependencies($input->getOption('with-all-dependencies'))
+                    ->setUpdateWhitelist($packages)
+                    ->setExecuteOperations(false);
+            } else {
+                $allowTransitiveDependencies =
+                    $input->getOption('with-all-dependencies') ?
+                    Request::UPDATE_LISTED_WITH_TRANSITIVE_DEPS : (
+                        $input->getOption('with-dependencies') ?
+                        Request::UPDATE_LISTED_WITH_TRANSITIVE_DEPS_NO_ROOT_REQUIRE :
+                        Request::UPDATE_ONLY_LISTED
+                    );
+                $install
+                    ->setUpdateAllowTransitiveDependencies($allowTransitiveDependencies)
+                    ->setUpdateAllowlist($packages);
+            }
 
             $result = $install->run();
         } catch (Exception $e) {

@@ -28,7 +28,7 @@ trait Fixtures
     {
         $branch = exec('git rev-parse --abbrev-ref HEAD');
         if ($branch == 'HEAD') {
-            $branch = 'master';
+            $branch = 'main';
         }
 
         return [
