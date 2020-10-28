@@ -51,7 +51,7 @@ class SimpleProjectTest extends TestCase
 
         list($output, $status) = $this->composer('info', $testProjectDir);
         $this->assertEquals(0, $status);
-        $this->assertRegExp('#^composer/semver *3.2.1#', $output);
+        $this->assertRegExp('#^composer/semver *3\.2\.#', $output);
 
         // Try to load a scenario that does not exist
 
