@@ -38,5 +38,7 @@ class DependencyLicensesCommand extends BaseCommand
         if ($result) {
             $output->writeln('Updated dependency licenses.');
         }
+
+        return 0;
     }
 }
