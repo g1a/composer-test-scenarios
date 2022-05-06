@@ -53,5 +53,7 @@ class ScenarioCommand extends BaseCommand
         if (getenv("CI")) {
             passthru("composer -n --working-dir=$dir info");
         }
+
+        return $status;
     }
 }

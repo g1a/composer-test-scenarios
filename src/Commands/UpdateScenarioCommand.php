@@ -33,5 +33,7 @@ class UpdateScenarioCommand extends BaseCommand
         $dir = getcwd();
         $handler = new Handler($this->getComposer(), $this->getIO());
         $handler->updateScenarios($dir);
+
+        return 0;
     }
 }
