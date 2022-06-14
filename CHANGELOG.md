@@ -1,5 +1,9 @@
 # Changelog
 
+### 3.2.1 - 2020-10-28
+
+* Adjust tests
+
 ### 3.2.0 - 2020-09-28
 
 * Add Composer 2 / PHP 8 compatibility. (#14)
