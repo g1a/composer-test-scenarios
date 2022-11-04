@@ -1,5 +1,9 @@
 # Changelog
 
+### 3.2.1 - 2022-11-04
+
+* Make all command return integer for compatibility with the latest composer (#20)
+
 ### 3.2.0 - 2020-09-28
 
 * Add Composer 2 / PHP 8 compatibility. (#14)
