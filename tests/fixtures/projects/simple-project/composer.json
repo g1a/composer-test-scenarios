@@ -19,6 +19,11 @@
             "ComposerTestScenarios\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "ComposerTestScenarios\\": ["src/", "lib/"]
+        }
+    },
     "extra": {
         "scenarios": {
             "semver30": {
