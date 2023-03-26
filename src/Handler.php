@@ -444,16 +444,24 @@ class Handler
     /**
      * Alter one path
      *
-     * @param string $path
+     * @param string|string[] $path
      *   A path, e.g. './web' or 'web'
      *
-     * @return string
+     * @return string|string[]
      *   Path adjusted to compensate for composer.json moving to
      *   .scenarios-lock/scenario/composer.json
      */
     protected function fixPath($path)
     {
-        return '../../' . preg_replace('#^\./#', '', $path);
+        $normalizePath = static function ($path) {
+            return '../../' . preg_replace('#^\./#', '', $path);
+        };
+
+        if (is_array($path)) {
+            return array_map($normalizePath, $path);
+        }
+
+        return $normalizePath($path);
     }
 
     protected function writeComposerData($scenarioData, $scenarioDir)
