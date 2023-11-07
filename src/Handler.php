@@ -162,8 +162,24 @@ class Handler
         return "$dir/vendor/composer/installed.json";
     }
 
+    /**
+     * Install a scenario.
+     *
+     * @param string $scenario
+     *   The scenario to install.
+     * @param string $dependencies
+     *   The dependencies to install.
+     * @param string $dir
+     *   The directory to install the scenario in.
+     *
+     * @return int
+     *   The status code of the install.
+     *
+     * Note: This function should always return an integer, or face the wrath of synfony/process.
+     */
     public function installScenario($scenario, $dependencies, $dir)
     {
+        $status = 0;
         $scenarioDir = static::scenarioLockDir($dir, $scenario);
         if (!is_dir($scenarioDir)) {
             throw new \Exception("The scenario '$scenario' does not exist.");
@@ -174,7 +190,7 @@ class Handler
         passthru("composer -n --working-dir=$scenarioDir validate --no-check-all --ansi", $status);
         // print("composer -n --working-dir=$scenarioDir $scenarioCommand $extraOptions --prefer-dist --no-scripts\n");
         if ($status != 0) {
-            return $status;
+            return (int) $status;
         }
 
         if ($scenarioCommand == 'update') {
@@ -182,7 +198,7 @@ class Handler
         }
 
         passthru("composer -n --working-dir=$scenarioDir install $extraOptions --prefer-dist", $status);
-        return $status;
+        return (int) $status;
     }
 
     protected function determineDependenciesCommand($dependencies)

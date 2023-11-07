@@ -35,6 +35,8 @@ class ScenarioCommand extends BaseCommand
 
     /**
      * {@inheritdoc}
+     *
+     * Note: Symfony commands should always return an integer exit code.
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -45,7 +47,7 @@ class ScenarioCommand extends BaseCommand
         $status = $handler->installScenario($scenario_name, $dependencies, $dir);
 
         if ($status != 0) {
-            return $status;
+            return (int) $status;
         }
 
         // If called from a CI context, print out some extra information about
@@ -54,6 +56,6 @@ class ScenarioCommand extends BaseCommand
             passthru("composer -n --working-dir=$dir info");
         }
 
-        return $status;
+        return (int) $status;
     }
 }
