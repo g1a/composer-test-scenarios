@@ -1,5 +1,10 @@
 # Changelog
 
+### 3.2.2 - 2023-11-08
+
+- Cast the return type of the execute command (#23)
+- Composer allow to autoload classes for the same prefix from multiple directories (#21)
+
 ### 3.2.1 - 2022-11-04
 
 * Make all command return integer for compatibility with the latest composer (#20)
